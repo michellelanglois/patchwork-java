@@ -1,5 +1,6 @@
 package model;
 
+import model.patches.Patch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,16 +12,15 @@ class QuiltTest {
 
     @BeforeEach
     public void runBefore() {
-        testQuilt = new Quilt("test", 4, 5,6.0);
+        testQuilt = new Quilt(4, 5,6.0);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals("test", testQuilt.getName());
         assertEquals(20, testQuilt.getNumBlocksAcross() * testQuilt.getNumBlocksDown());
         assertEquals(20, testQuilt.getBlocks().size());
         for (Block b: testQuilt.getBlocks()) {
-            assertEquals(null, b);
+            assertNull(b);
         }
     }
 
@@ -32,7 +32,7 @@ class QuiltTest {
         assertEquals(6.0, targetBlockSlot.getFinishedSize());
         assertEquals(4, targetBlockSlot.countPatches(Patch.HALF_TRIANGLE));
         for (int i = 1; i < testQuilt.getTotalBlocks(); i++) {
-            assertEquals(null, testQuilt.getBlocks().get(i));
+            assertNull(testQuilt.getBlocks().get(i));
         }
     }
 
@@ -44,10 +44,10 @@ class QuiltTest {
         assertEquals(6.0, targetBlockSlot.getFinishedSize());
         assertEquals(0, targetBlockSlot.countPatches(Patch.HALF_SQUARE));
         for (int i = 0; i < 6; i++) {
-            assertEquals(null, testQuilt.getBlocks().get(i));
+            assertNull(testQuilt.getBlocks().get(i));
         }
         for (int i = 7; i < testQuilt.getTotalBlocks(); i++) {
-            assertEquals(null, testQuilt.getBlocks().get(i));
+            assertNull(testQuilt.getBlocks().get(i));
         }
     }
 
@@ -62,10 +62,10 @@ class QuiltTest {
         assertEquals(6.0, newTargetBlockSlot.getFinishedSize());
         assertEquals(4, newTargetBlockSlot.countPatches(Patch.HALF_SQUARE));
         for (int i = 0; i < 6; i++) {
-            assertEquals(null, testQuilt.getBlocks().get(i));
+            assertNull(testQuilt.getBlocks().get(i));
         }
         for (int i = 7; i < testQuilt.getTotalBlocks(); i++) {
-            assertEquals(null, testQuilt.getBlocks().get(i));
+            assertNull(testQuilt.getBlocks().get(i));
         }
     }
 
@@ -73,7 +73,7 @@ class QuiltTest {
     public void testRemoveBlockFromEmptyPos() {
         testQuilt.removeBlock(3);
         Block targetBlockSlot = testQuilt.getBlocks().get(3);
-        assertEquals(null, targetBlockSlot);
+        assertNull(targetBlockSlot);
     }
 
     @Test
@@ -81,7 +81,7 @@ class QuiltTest {
         testQuilt.addBlock("checkerboard", 4);
         testQuilt.removeBlock(4);
         Block targetBlockSlot = testQuilt.getBlocks().get(4);
-        assertEquals(null, targetBlockSlot);
+        assertNull(targetBlockSlot);
     }
 
     @Test
@@ -136,7 +136,7 @@ class QuiltTest {
 
     @Test
     public void testBlockListToString() {
-        Quilt smallQuilt = new Quilt("small quilt", 2, 2, 3);
+        Quilt smallQuilt = new Quilt(2, 2, 3);
         smallQuilt.addBlock("friendship star", 2);
         String expectedString = "Block 1: empty\nBlock 2: empty\nBlock 3: friendship star\nBlock 4: empty\n";
         assertEquals(expectedString, smallQuilt.blockListToString());

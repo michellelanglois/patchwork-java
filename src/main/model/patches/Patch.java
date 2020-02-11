@@ -1,4 +1,4 @@
-package model;
+package model.patches;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public abstract class Patch {
         this.type = null;
         this.finishedSideLength = finishedSideLength;
         this.rotation = rotation;
-        this.fabrics = new ArrayList<String>(2);
+        this.fabrics = new ArrayList<>(2);
 
         fabrics.add("A");
         fabrics.add("B");

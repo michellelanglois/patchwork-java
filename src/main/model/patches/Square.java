@@ -1,6 +1,5 @@
 package model.patches;
 
-import model.Patch;
 import model.Quilt;
 
 /*

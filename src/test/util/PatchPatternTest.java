@@ -1,6 +1,6 @@
 package util;
 
-import model.Patch;
+import model.patches.Patch;
 import model.patches.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

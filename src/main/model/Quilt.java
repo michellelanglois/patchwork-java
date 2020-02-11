@@ -22,8 +22,8 @@ public class Quilt {
 
     public static final double SEAM_ALLOWANCE = 0.25;
     public static final double BINDING_WIDTH = 2.5;
+    public static final String[] AVAILABLE_FABRICS = {"A", "B"};
 
-    private String name;
     private int numBlocksAcross;
     private int numBlocksDown;
     private double blockSize;
@@ -31,8 +31,7 @@ public class Quilt {
 
     // REQUIRES: numBlocksAcross and numBlocksDown > 0; blockSize > 0
     // EFFECTS: Creates a quilt grid with space for given number of blocks across/down of given side length (in inches)
-    public Quilt(String name, int numBlocksAcross, int numBlocksDown, double blockSize) {
-        this.name = name;
+    public Quilt(int numBlocksAcross, int numBlocksDown, double blockSize) {
         this.numBlocksAcross = numBlocksAcross;
         this.numBlocksDown = numBlocksDown;
         this.blockSize = blockSize;
@@ -45,9 +44,6 @@ public class Quilt {
     }
 
     // getters
-    public String getName() {
-        return name;
-    }
 
     public int getNumBlocksAcross() {
         return numBlocksAcross;

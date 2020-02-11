@@ -1,6 +1,6 @@
 package util;
 
-import model.Patch;
+import model.patches.Patch;
 import model.patches.*;
 
 import java.util.ArrayList;
@@ -15,14 +15,15 @@ public class PatchPattern {
     // REQUIRES: size must be > 0, name must be in Blocks.AVAILABLE_BLOCKS
     // EFFECTS: returns the patch pattern for the given block name if pattern has been coded below, else empty list
     public List<Patch> getPattern(String name, double size) {
-        if (name.equals("greek square")) {
-            return getGreekSquarePattern(size);
-        } else if (name.equals("checkerboard")) {
-            return getCheckerboardPattern(size);
-        } else if (name.equals("friendship star")) {
-            return getFriendshipStarPattern(size);
-        } else {
-            return new ArrayList<>();
+        switch (name) {
+            case "greek square":
+                return getGreekSquarePattern(size);
+            case "checkerboard":
+                return getCheckerboardPattern(size);
+            case "friendship star":
+                return getFriendshipStarPattern(size);
+            default:
+                return new ArrayList<>();
         }
     }
 

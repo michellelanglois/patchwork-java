@@ -1,15 +1,10 @@
 package model;
 
-import model.patches.HalfSquare;
-import model.patches.HalfSquareTriangle;
-import model.patches.Square;
+import model.patches.Patch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BlockTest {
 

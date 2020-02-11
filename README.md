@@ -8,6 +8,14 @@ Patchwork is a simple app that helps new quilters plan their next project. Based
 ## Why Patchwork?
 As a new quilter who wanted to throw pre-made patterns to the wind and design my own quilt tops, I often struggled to visualize what my quilt would look like without using pages and pages of graph paper. I also struggled to get the math right the first time. And, inevitably, by the time I was ready to buy fabric, I'd have misplaced the scrap paper I'd used to scribble down my calculations and have to start all over again. Patchwork can help make both designing and calculating easier, so there's more time for actual **making**!
 
+## Future features
+In future iterations of Patchwork I hope to:
+- Make more blocks available, and add the ability for users to create their own blocks.
+- Add the ability to apply fabrics to specific blocks and/or patches.
+- Add blocks with different number of patches (4-patch, 16-patch).
+- Add the option of resizing the quilt by changing the block size and/or adding or removing rows or columns of blocks.
+- Add an option to calculate how many fat quarters or yards of standard-width fabric are needed to cover the quilt's fabric requirements.
+
 ## User stories
 For Phase I of Patchwork:
 - As a user, I want to be able to create a new quilt and choose a basic grid size and block size for the quilt.
