@@ -5,7 +5,7 @@ import model.Quilt;
 /*
 Represents a half-square patch of a quilt block with an orientation, a finished size, and list of two fabrics
 Half-square blocks are made up of two rectangles of fabric
-Half-square block fabric assignment (unrotated block) is as follows:
+Half-square block fabric assignment (un-rotated block) is as follows:
   ---- ----
  |    |    |
  | A  | B  |

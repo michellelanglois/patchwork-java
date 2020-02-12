@@ -1,11 +1,14 @@
 package model;
 
+import model.blocks.Block;
+import model.blocks.BlockType;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /*
 Represents a quilt of a specific number of blocks across and down, and the blocks it contains
-The list of blocks can be understood as mapping to a spot on the quilt grid as follows:
+The list of blocks can be understood as mapping to a spot on the quilt grid as follows, for example:
  ---- ---- ----
 |    |    |    |
 |  0 | 1  | 2  |
@@ -36,6 +39,8 @@ public class Quilt {
         this.numBlocksDown = numBlocksDown;
         this.blockSize = blockSize;
 
+        // ensures list of blocks is always exactly as long as the number of blocks in the quilt, so that blocks can
+        // be added in the right slots
         int totalBlocks = numBlocksAcross * numBlocksDown;
         this.blocks = new ArrayList<>(totalBlocks);
         for (int i = 0; i < totalBlocks; i++) {
@@ -44,7 +49,6 @@ public class Quilt {
     }
 
     // getters
-
     public int getNumBlocksAcross() {
         return numBlocksAcross;
     }
@@ -69,11 +73,11 @@ public class Quilt {
         return blocks;
     }
 
-    // REQUIRES: slot is >= 0 and < totalBlocks, name is in Block.AVAILABLE_BLOCKS
+    // REQUIRES: slot is >= 0 and < totalBlocks
     // MODIFIES: this
     // EFFECTS: constructs block of given name in the given slot of the quilt; replaces current block if one exists
-    public void addBlock(String name, int slot) {
-        Block blockToAdd = new Block(name, blockSize);
+    public void addBlock(BlockType blockType, int slot) {
+        Block blockToAdd = new Block(blockType, blockSize);
         blocks.set(slot, blockToAdd);
     }
 
@@ -126,16 +130,17 @@ public class Quilt {
 
     // EFFECTS: returns a string representing the quilt in the form Block 1: friendship star
     public String blockListToString() {
-        String blockListString = "";
+        StringBuilder blockListString = new StringBuilder();
         for (int i = 0; i < blocks.size(); i++) {
             Block blockAtIndex = blocks.get(i);
             if (blockAtIndex == null) {
-                blockListString += ("Block " + (i + 1) + ": " + "empty\n");
+                blockListString.append("Block ").append(i + 1).append(": ").append("empty\n");
             } else {
-                blockListString += ("Block " + (i + 1) + ": " + blockAtIndex.getName() + "\n");
+                String blockName = blockAtIndex.getBlockType();
+                blockListString.append("Block ").append(i + 1).append(": ").append(blockName).append("\n");
             }
         }
-        return blockListString;
+        return blockListString.toString();
     }
 
 }

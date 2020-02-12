@@ -15,14 +15,11 @@ Square blocks always start off not rotated, unlike half-squares and half-square 
 
 public class Square extends Patch {
 
-    private String style;
-
     // REQUIRES: style must be "A" or "B"
     //           finishedSideLength is pre-determined by the block size and number of patches (passed in from block)
     // EFFECTS: creates a square patch of given size (in inches) and style ("A" or "B")
     public Square(double finishedSideLength, String style) {
         super(finishedSideLength, 0);
-        this.style = style;
         this.type = SQUARE;
 
         if (style.equals("A")) {

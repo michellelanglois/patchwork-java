@@ -1,5 +1,7 @@
 package model;
 
+import model.blocks.Block;
+import model.blocks.BlockType;
 import model.patches.Patch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +28,9 @@ class QuiltTest {
 
     @Test
     public void testAddBlockToEmptyQuiltPos0() {
-        testQuilt.addBlock("friendship star", 0);
+        testQuilt.addBlock( BlockType.FRIENDSHIP_STAR, 0);
         Block targetBlockSlot = testQuilt.getBlocks().get(0);
-        assertEquals("friendship star", targetBlockSlot.getName());
+        assertEquals("friendship star", targetBlockSlot.getBlockType());
         assertEquals(6.0, targetBlockSlot.getFinishedSize());
         assertEquals(4, targetBlockSlot.countPatches(Patch.HALF_TRIANGLE));
         for (int i = 1; i < testQuilt.getTotalBlocks(); i++) {
@@ -38,9 +40,9 @@ class QuiltTest {
 
     @Test
     public void testAddBlockToEmptyQuiltPosInMiddle() {
-        testQuilt.addBlock("checkerboard", 6);
+        testQuilt.addBlock(BlockType.CHECKERBOARD, 6);
         Block targetBlockSlot = testQuilt.getBlocks().get(6);
-        assertEquals("checkerboard", targetBlockSlot.getName());
+        assertEquals("checkerboard", targetBlockSlot.getBlockType());
         assertEquals(6.0, targetBlockSlot.getFinishedSize());
         assertEquals(0, targetBlockSlot.countPatches(Patch.HALF_SQUARE));
         for (int i = 0; i < 6; i++) {
@@ -53,12 +55,13 @@ class QuiltTest {
 
     @Test
     public void testAddBlockToNonEmptyQuiltPos() {
-        testQuilt.addBlock("checkerboard", 6);
+        testQuilt.addBlock(BlockType.CHECKERBOARD, 6);
         Block targetBlockSlot = testQuilt.getBlocks().get(6);
-        assertEquals("checkerboard", targetBlockSlot.getName());
-        testQuilt.addBlock("greek square", 6);
+        assertEquals("checkerboard", targetBlockSlot.getBlockType());
+        testQuilt.addBlock(BlockType.GREEK_SQUARE, 6);
+
         Block newTargetBlockSlot = testQuilt.getBlocks().get(6);
-        assertEquals("greek square", newTargetBlockSlot.getName());
+        assertEquals("greek square", newTargetBlockSlot.getBlockType());
         assertEquals(6.0, newTargetBlockSlot.getFinishedSize());
         assertEquals(4, newTargetBlockSlot.countPatches(Patch.HALF_SQUARE));
         for (int i = 0; i < 6; i++) {
@@ -78,7 +81,7 @@ class QuiltTest {
 
     @Test
     public void testRemoveBlockFromNonEmptyPos() {
-        testQuilt.addBlock("checkerboard", 4);
+        testQuilt.addBlock(BlockType.CHECKERBOARD, 4);
         testQuilt.removeBlock(4);
         Block targetBlockSlot = testQuilt.getBlocks().get(4);
         assertNull(targetBlockSlot);
@@ -91,8 +94,8 @@ class QuiltTest {
 
     @Test
     public void testCountPatchesNonEmptyQuilt() {
-        testQuilt.addBlock("checkerboard", 1);
-        testQuilt.addBlock("friendship star", 5);
+        testQuilt.addBlock(BlockType.CHECKERBOARD, 1);
+        testQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 5);
         assertEquals(14, testQuilt.countPatches(Patch.SQUARE));
         assertEquals(4, testQuilt.countPatches(Patch.HALF_TRIANGLE));
         assertEquals(0, testQuilt.countPatches(Patch.HALF_SQUARE));
@@ -105,16 +108,16 @@ class QuiltTest {
 
     @Test
     public void testCalculateFabricNonEmptyQuiltCheckerboards() {
-        testQuilt.addBlock("checkerboard", 4);
-        testQuilt.addBlock("checkerboard", 2);
+        testQuilt.addBlock(BlockType.CHECKERBOARD, 4);
+        testQuilt.addBlock(BlockType.CHECKERBOARD, 2);
         assertEquals(63.0, testQuilt.calculateFabric("A"));
         assertEquals(50.0, testQuilt.calculateFabric("B"));
     }
 
     @Test
     public void testCalculateFabricNonEmptyQuiltVarious() {
-        testQuilt.addBlock("friendship star", 1);
-        testQuilt.addBlock("greek square", 9);
+        testQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 1);
+        testQuilt.addBlock(BlockType.GREEK_SQUARE, 9);
         assertEquals(89.0, testQuilt.calculateFabric("A"));
         assertEquals(77.0, testQuilt.calculateFabric("B"));
     }
@@ -137,7 +140,7 @@ class QuiltTest {
     @Test
     public void testBlockListToString() {
         Quilt smallQuilt = new Quilt(2, 2, 3);
-        smallQuilt.addBlock("friendship star", 2);
+        smallQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 2);
         String expectedString = "Block 1: empty\nBlock 2: empty\nBlock 3: friendship star\nBlock 4: empty\n";
         assertEquals(expectedString, smallQuilt.blockListToString());
     }

@@ -29,7 +29,7 @@ public class PatchTest {
         assertEquals(0, squarePatchA.getRotation());
         assertEquals(2.5, squarePatchA.getFinishedSideLength());
         assertEquals("A", squarePatchA.getFabrics().get(0));
-        assertEquals(null, squarePatchA.getFabrics().get(1));
+        assertNull(squarePatchA.getFabrics().get(1));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class PatchTest {
         assertEquals(Patch.SQUARE, squarePatchB.getType());
         assertEquals(0, squarePatchB.getRotation());
         assertEquals(2.5, squarePatchB.getFinishedSideLength());
-        assertEquals(null, squarePatchB.getFabrics().get(0));
+        assertNull(squarePatchB.getFabrics().get(0));
         assertEquals("B", squarePatchB.getFabrics().get(1));
     }
 

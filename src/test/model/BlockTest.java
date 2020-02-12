@@ -1,5 +1,7 @@
 package model;
 
+import model.blocks.Block;
+import model.blocks.BlockType;
 import model.patches.Patch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,14 +16,14 @@ public class BlockTest {
 
     @BeforeEach
     public void runBefore() {
-        greekSquareBlock = new Block("greek square", 12);
-        friendshipStarBlock = new Block("friendship star", 7.5);
-        checkerboardBlock = new Block("checkerboard", 6);
+        greekSquareBlock = new Block(BlockType.GREEK_SQUARE, 12);
+        friendshipStarBlock = new Block(BlockType.FRIENDSHIP_STAR, 7.5);
+        checkerboardBlock = new Block(BlockType.CHECKERBOARD, 6);
     }
 
     @Test
     public void testConstructorKnownBlock() {
-        assertEquals("greek square", greekSquareBlock.getName());
+        assertEquals("greek square", greekSquareBlock.getBlockType());
         assertEquals(12, greekSquareBlock.getFinishedSize());
         assertEquals(9, greekSquareBlock.getPatches().size());
     }

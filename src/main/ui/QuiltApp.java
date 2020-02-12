@@ -1,10 +1,9 @@
 package ui;
 
-import model.Block;
 import model.Quilt;
+import model.blocks.BlockType;
 import model.patches.Patch;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -14,6 +13,15 @@ NOTE: Code for this UI is based on code provided by CPSC 210 staff in the Teller
  */
 
 public class QuiltApp {
+
+    private static final String QUIT_CMD = "q";
+    private static final String BACK_CMD = "b";
+    private static final String NEW_QUILT_CMD = "n";
+    private static final String ADD_BLOCK_CMD = "a";
+    private static final String DEL_BLOCK_CMD = "d";
+    private static final String VIEW_CMD = "v";
+    private static final String CALC_FABRIC_CMD = "f";
+    private static final String CALC_PATCHES_CMD = "p";
 
     private Quilt quilt;
     private Scanner input;
@@ -34,10 +42,10 @@ public class QuiltApp {
             displayMainMenu();
             String command = input.next().toLowerCase();
 
-            if (command.equals("q")) {
+            if (command.equals(QUIT_CMD)) {
                 runProgram = false;
                 stopQuiltApp();
-            } else if (command.equals("n")) {
+            } else if (command.equals(NEW_QUILT_CMD)) {
                 startNewQuilt();
             } else {
                 System.out.println("Sorry! That's not a valid command.");
@@ -49,8 +57,8 @@ public class QuiltApp {
     private void displayMainMenu() {
         System.out.println("----------");
         System.out.println("\nDo you want to start a new quilt or quit for the day?");
-        System.out.println("n --> start a new quilt");
-        System.out.println("q --> quit");
+        System.out.println(NEW_QUILT_CMD + " --> start a new quilt");
+        System.out.println(QUIT_CMD + " --> quit");
     }
 
     // MODIFIES: this
@@ -128,34 +136,34 @@ public class QuiltApp {
         System.out.println("\n----------");
         System.out.println("\nWhat do you want to do next?");
         System.out.println("\n*** I want to create! ***");
-        System.out.println("     a --> add a block to my quilt (or change one)");
-        System.out.println("     d --> delete a block from my quilt");
-        System.out.println("     v --> view a list of blocks in my quilt");
+        System.out.println("     " + ADD_BLOCK_CMD + " --> add a block to my quilt (or change one)");
+        System.out.println("     " + DEL_BLOCK_CMD + " --> delete a block from my quilt");
+        System.out.println("     " + VIEW_CMD + " --> view a list of blocks in my quilt");
         System.out.println("\n*** Do the math for me! ***");
-        System.out.println("     f --> calculate total fabric requirements");
-        System.out.println("     p --> calculate total number of patches needed");
-        System.out.println("\n*** I'm tired. ***");
-        System.out.println("     b --> go back to main menu");
-        System.out.println("     q --> quit");
+        System.out.println("     " + CALC_FABRIC_CMD + " --> calculate total fabric requirements");
+        System.out.println("     " + CALC_PATCHES_CMD + " --> calculate total number of patches needed");
+        System.out.println("\n*** I'm going outside. ***");
+        System.out.println("     " + BACK_CMD + " --> go back to main menu");
+        System.out.println("     " + QUIT_CMD + " --> quit");
     }
 
     // MODIFIES: this
     // EFFECTS: processes user command from quilt menu
     public void processCommand(String command) {
         switch (command) {
-            case "a":
+            case ADD_BLOCK_CMD:
                 handleAddBlock();
                 break;
-            case "d":
+            case DEL_BLOCK_CMD:
                 handleDeleteBlock();
                 break;
-            case "f":
+            case CALC_FABRIC_CMD:
                 printFabricNeeded();
                 break;
-            case "p":
+            case CALC_PATCHES_CMD:
                 printPatchesNeeded();
                 break;
-            case "v":
+            case VIEW_CMD:
                 printQuiltAsList();
                 break;
             default:
@@ -164,25 +172,26 @@ public class QuiltApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: handles user input for block addition
+    // EFFECTS: handles user input for block addition; adds block to quilt
     private void handleAddBlock() {
         System.out.println("\nTime to get creative! Adding a block to your quilt, or changing an existing one, is"
                 + " simple. Just choose a block name a slot, and we'll do the hard work.");
         printAvailableBlocks();
 
         System.out.println("\nWhat block do you want to add?");
-        String blockChoice = selectBlockToAdd();
+        BlockType blockChoice = selectBlockToAdd();
 
         System.out.println("\nWhere do you want to add it?");
         int slotChoice = selectSlot();
         int slotIndex = slotChoice - 1;
 
         quilt.addBlock(blockChoice, slotIndex);
-        System.out.println("\nAmazing! You just added a " + blockChoice + " to slot " + slotChoice + ". Looking good!");
+        System.out.println("\nAmazing! You just added a " + blockChoice.getBlockName()
+                + " to slot " + slotChoice + ". Looking good!");
     }
 
     // MODIFIES: this
-    // EFFECTS: handles user input for block deletion
+    // EFFECTS: handles user input for block deletion; deletes block from quilt
     private void handleDeleteBlock() {
         System.out.println("\nChanging your mind is never a bad thing!");
         System.out.println("\nWhat is the slot number for the block you want to delete?");
@@ -210,20 +219,20 @@ public class QuiltApp {
     }
 
     // EFFECT: prompts user to select a block to add and returns the block name
-    private String selectBlockToAdd() {
+    private BlockType selectBlockToAdd() {
         String blockChoice = input.nextLine().toLowerCase();
-        while (!Arrays.asList(Block.AVAILABLE_BLOCKS).contains(blockChoice)) {
+        while (!BlockType.BLOCK_MAP.containsKey(blockChoice)) {
             System.out.println("Type the name of the block exactly as listed above.");
             blockChoice = input.nextLine().toLowerCase();
         }
-        return blockChoice;
+        return BlockType.BLOCK_MAP.get(blockChoice);
     }
 
     // EFFECTS: prints out a numbered list of available blocks
     private void printAvailableBlocks() {
         int i = 1;
         System.out.println("\nHere are the blocks you can add to your quilt:");
-        for (String blockName : Block.AVAILABLE_BLOCKS) {
+        for (String blockName : BlockType.BLOCK_MAP.keySet()) {
             System.out.println("     [" + i + "] " + blockName);
             i++;
         }

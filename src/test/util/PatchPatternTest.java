@@ -1,5 +1,6 @@
 package util;
 
+import model.blocks.BlockType;
 import model.patches.Patch;
 import model.patches.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,14 +19,8 @@ public class PatchPatternTest {
     }
 
     @Test
-    public void testGetPatternBadName() {
-        List<Patch> pattern = testPatchPattern.getPattern("greek", 4);
-        assertEquals(0, pattern.size());
-    }
-
-    @Test
     public void testGetPatternGreekSquare() {
-        List<Patch> pattern = testPatchPattern.getPattern("greek square", 3);
+        List<Patch> pattern = testPatchPattern.getPattern(BlockType.GREEK_SQUARE, 3);
         assertEquals(9, pattern.size());
 
         for (Patch p : pattern) {
@@ -46,7 +41,7 @@ public class PatchPatternTest {
 
     @Test
     public void testGetPatternFriendshipStar() {
-        List<Patch> pattern = testPatchPattern.getPattern("friendship star", 4);
+        List<Patch> pattern = testPatchPattern.getPattern(BlockType.FRIENDSHIP_STAR, 4);
         assertEquals(9, pattern.size());
 
         for (Patch p : pattern) {
@@ -66,7 +61,7 @@ public class PatchPatternTest {
 
     @Test
     public void testGetPatternCheckerboard() {
-        List<Patch> pattern = testPatchPattern.getPattern("checkerboard", 2.5);
+        List<Patch> pattern = testPatchPattern.getPattern(BlockType.CHECKERBOARD, 2.5);
         assertEquals(9, pattern.size());
 
         for (Patch p : pattern) {
