@@ -3,7 +3,12 @@ package ui;
 import model.Quilt;
 import model.blocks.BlockType;
 import model.patches.Patch;
+import persistence.Reader;
+import persistence.Writer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /*
@@ -16,12 +21,20 @@ public class QuiltApp {
 
     private static final String QUIT_CMD = "q";
     private static final String BACK_CMD = "b";
+
+    private static final String SAVE_CMD = "s";
+    private static final String LOAD_QUILT_CMD = "l";
+
     private static final String NEW_QUILT_CMD = "n";
     private static final String ADD_BLOCK_CMD = "a";
     private static final String DEL_BLOCK_CMD = "d";
     private static final String VIEW_CMD = "v";
+
     private static final String CALC_FABRIC_CMD = "f";
     private static final String CALC_PATCHES_CMD = "p";
+
+    private static final String QUILT_FILE = "./data/myquilt.json";
+
 
     private Quilt quilt;
     private Scanner input;
@@ -36,19 +49,25 @@ public class QuiltApp {
     // MODIFIES: this
     // EFFECTS: runs the quilt app user interface in the console
     private void enterMainMenu() {
-        System.out.println("*** WELCOME TO PATCHWORK ***\n");
+        System.out.println("\n*** WELCOME TO PATCHWORK ***\n");
 
         while (runProgram) {
             displayMainMenu();
             String command = input.next().toLowerCase();
 
-            if (command.equals(QUIT_CMD)) {
-                runProgram = false;
-                stopQuiltApp();
-            } else if (command.equals(NEW_QUILT_CMD)) {
-                startNewQuilt();
-            } else {
-                System.out.println("Sorry! That's not a valid command.");
+            switch (command) {
+                case QUIT_CMD:
+                    stopQuiltApp();
+                    break;
+                case NEW_QUILT_CMD:
+                    startNewQuilt();
+                    break;
+                case LOAD_QUILT_CMD:
+                    loadQuilt();
+                    break;
+                default:
+                    System.out.println("Sorry! That's not a valid command.");
+                    break;
             }
         }
     }
@@ -56,9 +75,22 @@ public class QuiltApp {
     // EFFECTS: prints out the main menu for the quilt app
     private void displayMainMenu() {
         System.out.println("----------");
-        System.out.println("\nDo you want to start a new quilt or quit for the day?");
-        System.out.println(NEW_QUILT_CMD + " --> start a new quilt");
-        System.out.println(QUIT_CMD + " --> quit");
+        System.out.println("\nDo you want to start a new quilt, load a previous creation, or quit for the day?");
+        System.out.println("     " + NEW_QUILT_CMD + " --> start a new quilt");
+        System.out.println("     " + LOAD_QUILT_CMD + " --> load my saved quilt");
+        System.out.println("     " + QUIT_CMD + " --> quit");
+    }
+
+    // EFFECTS: loads a quilt from file if a saved quilt exists; otherwise, returns to main menu
+    private void loadQuilt() {
+        try {
+            quilt = Reader.readQuilt(new File(QUILT_FILE));
+            designQuilt();
+        } catch (FileNotFoundException e) {
+            System.out.println("Sorry! You don't have a quilt saved. Why don't you start a new one?");
+        } catch (IOException e) {
+            System.out.println("Sorry, a quilt could not be loaded. Why don't you start a new one?");
+        }
     }
 
     // MODIFIES: this
@@ -114,19 +146,20 @@ public class QuiltApp {
     // EFFECTS: prompts user through the process of designing their quilt
     public void designQuilt() {
         boolean designQuilt = true;
-        while (designQuilt) {
-            displayQuiltMenu();
-            String command = input.next().toLowerCase();
+        displayQuiltMenu();
 
+        while (designQuilt) {
+            String command = input.next().toLowerCase();
             if (command.equals("b")) {
                 designQuilt = false;
+                promptToSave();
                 enterMainMenu();
             } else if (command.equals("q")) {
                 designQuilt = false;
-                runProgram = false;
                 stopQuiltApp();
             } else {
                 processCommand(command);
+                System.out.println("\nWhat do you want to do next?");
             }
         }
     }
@@ -143,6 +176,7 @@ public class QuiltApp {
         System.out.println("     " + CALC_FABRIC_CMD + " --> calculate total fabric requirements");
         System.out.println("     " + CALC_PATCHES_CMD + " --> calculate total number of patches needed");
         System.out.println("\n*** I'm going outside. ***");
+        System.out.println("     " + SAVE_CMD + " --> save quilt");
         System.out.println("     " + BACK_CMD + " --> go back to main menu");
         System.out.println("     " + QUIT_CMD + " --> quit");
     }
@@ -157,14 +191,17 @@ public class QuiltApp {
             case DEL_BLOCK_CMD:
                 handleDeleteBlock();
                 break;
+            case VIEW_CMD:
+                printQuiltAsList();
+                break;
             case CALC_FABRIC_CMD:
                 printFabricNeeded();
                 break;
             case CALC_PATCHES_CMD:
                 printPatchesNeeded();
                 break;
-            case VIEW_CMD:
-                printQuiltAsList();
+            case SAVE_CMD:
+                saveQuilt();
                 break;
             default:
                 System.out.println("Sorry! That's not a valid command. Try again?");
@@ -194,7 +231,7 @@ public class QuiltApp {
     // EFFECTS: handles user input for block deletion; deletes block from quilt
     private void handleDeleteBlock() {
         System.out.println("\nChanging your mind is never a bad thing!");
-        System.out.println("\nWhat is the slot number for the block you want to delete?");
+        System.out.println("What is the slot number for the block you want to delete?");
         int slotChoice = selectSlot();
         int slotIndex = slotChoice - 1;
 
@@ -274,10 +311,31 @@ public class QuiltApp {
         }
     }
 
+    private void saveQuilt() {
+        try {
+            Writer writer = new Writer(new File(QUILT_FILE));
+            writer.write(quilt);
+            writer.close();
+            System.out.println("\nQuilt saved!");
+        } catch (IOException e) {
+            System.out.println("\nSorry! We couldn't save your quilt.");
+        }
+    }
+
     // EFFECTS: stops receiving user input
     private void stopQuiltApp() {
+        runProgram = false;
+        promptToSave();
         System.out.println("\nThanks for using Patchwork!");
         input.close();
+    }
+
+    private void promptToSave() {
+        System.out.println("\nDo you want to save your quilt? (y / n)");
+        String toSave = input.next().toLowerCase();
+        if (toSave.equals("y")) {
+            saveQuilt();
+        }
     }
 
 }

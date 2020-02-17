@@ -4,6 +4,7 @@ package persistence;
 import model.Quilt;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -16,9 +17,13 @@ public class Reader {
 
     // EFFECTS: reads data from JSON file, deserializes the JSON objects into a Quilt object, and returns the Quilt
     public static Quilt readQuilt(File file) throws IOException {
-        FileReader fileReader = new FileReader(file);
-        GsonConfigured gsonConfigured = new GsonConfigured();
-        return gsonConfigured.getGson().fromJson(fileReader, Quilt.class);
+        if (!file.exists()) {
+            throw new FileNotFoundException();
+        } else {
+            FileReader fileReader = new FileReader(file);
+            GsonConfigured gsonConfigured = new GsonConfigured();
+            return gsonConfigured.getGson().fromJson(fileReader, Quilt.class);
+        }
     }
 
 

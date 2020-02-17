@@ -1,0 +1,201 @@
+{
+  "numBlocksAcross": 2,
+  "numBlocksDown": 2,
+  "blockSize": 9.0,
+  "blocks": [
+    {
+      "blockType": "FRIENDSHIP_STAR",
+      "finishedSize": 9.0,
+      "patches": [
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            null
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 90,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        }
+      ]
+    },
+    {
+      "blockType": "GREEK_SQUARE",
+      "finishedSize": 9.0,
+      "patches": [
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HSQ",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 90,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HSQ",
+          "finishedSideLength": 3.0,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            null
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HSQ",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HSQ",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 3.0,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        }
+      ]
+    },
+    null,
+    null
+  ]
+}
