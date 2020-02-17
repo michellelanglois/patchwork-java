@@ -1,0 +1,108 @@
+{
+  "numBlocksAcross": 3,
+  "numBlocksDown": 2,
+  "blockSize": 9.0,
+  "blocks": [
+    null,
+    {
+      "blockType": "GREEK_SQUARE",
+      "finishedSize": 9.0,
+      "patches": [
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HalfSquare",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 3.0,
+          "rotation": 90,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HalfSquare",
+          "finishedSideLength": 3.0,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "Square",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HalfSquare",
+          "finishedSideLength": 3.0,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "b",
+          "type": "HalfSquare",
+          "finishedSideLength": 3.0,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 3.0,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        }
+      ]
+    },
+    null,
+    null,
+    null,
+    null
+  ]
+}

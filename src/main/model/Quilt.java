@@ -2,7 +2,9 @@ package model;
 
 import model.blocks.Block;
 import model.blocks.BlockType;
+import persistence.Saveable;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ The list of blocks can be understood as mapping to a spot on the quilt grid as f
  ---- ---- ----
  */
 
-public class Quilt {
+public class Quilt implements Saveable {
 
     public static final double SEAM_ALLOWANCE = 0.25;
     public static final double BINDING_WIDTH = 2.5;
@@ -47,6 +49,9 @@ public class Quilt {
             blocks.add(i, null);
         }
     }
+
+    // EFFECTS: Creates a quilt; used only when deserializing quilt data from JSON using Gson
+    private Quilt() { }
 
     // getters
     public int getNumBlocksAcross() {
@@ -141,6 +146,11 @@ public class Quilt {
             }
         }
         return blockListString.toString();
+    }
+
+    @Override
+    public void save(FileWriter fileWriter) {
+
     }
 
 }
