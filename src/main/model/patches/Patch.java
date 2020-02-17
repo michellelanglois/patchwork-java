@@ -34,6 +34,9 @@ public abstract class Patch {
         fabrics.add("B");
     }
 
+    // EFFECTS: Creates a patch; used only when deserializing patch data from JSON using GSON
+    protected Patch() { }
+
     //getters
     public double getFinishedSideLength() {
         return finishedSideLength;

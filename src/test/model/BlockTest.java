@@ -56,14 +56,14 @@ public class BlockTest {
 
     @Test
     public void testCalculateFabricContainsFabricFriendshipStar() {
-        assertEquals(68, friendshipStarBlock.calculateFabric("A"));
-        assertEquals(41, friendshipStarBlock.calculateFabric("B"));
+        assertEquals(41, friendshipStarBlock.calculateFabric("A"));
+        assertEquals(68, friendshipStarBlock.calculateFabric("B"));
     }
 
     @Test
     public void testCalculateFabricContainsFabricGreekSquare() {
-        assertEquals(105.5, greekSquareBlock.calculateFabric("A"));
-        assertEquals(125.75, greekSquareBlock.calculateFabric("B"));
+        assertEquals(125.75, greekSquareBlock.calculateFabric("A"));
+        assertEquals(105.5, greekSquareBlock.calculateFabric("B"));
     }
 
     @Test

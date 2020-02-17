@@ -2,9 +2,11 @@ package model;
 
 import model.blocks.Block;
 import model.blocks.BlockType;
+import persistence.GsonConfigured;
 import persistence.Saveable;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,9 +150,16 @@ public class Quilt implements Saveable {
         return blockListString.toString();
     }
 
+    // MODIFIES: fileWriter
+    // EFFECTS: converts the quilt to JSON and writes the JSON data to fileWriter
     @Override
-    public void save(FileWriter fileWriter) {
-
+    public void save(FileWriter fileWriter) throws IOException {
+        // turns the quilt into JSON data
+        GsonConfigured gsonConfigured = new GsonConfigured();
+        String jsonQuilt = gsonConfigured.getGson().toJson(this);
+        // writes the JSON data to fileWriter
+        fileWriter.write(jsonQuilt);
+        fileWriter.close();
     }
 
 }

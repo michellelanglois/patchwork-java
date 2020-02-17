@@ -23,6 +23,9 @@ public class HalfSquare extends Patch {
         this.type = HALF_SQUARE;
     }
 
+    // EFFECTS: Creates a half-square patch; used only when deserializing patch data from JSON using GSON
+    private HalfSquare() { }
+
     // EFFECTS: calculates the total fabric (in square inches) needed to make one rectangle of the patch
     @Override
     protected double getCalculation() {

@@ -28,6 +28,9 @@ public class Block {
         this.patches = pattern.getPattern(blockType, getFinishedPatchSize());
     }
 
+    // EFFECTS: Creates a block; used only when deserializing saved block data from JSON using GSON
+    private Block() { }
+
     // getters
     public double getFinishedSize() {
         return finishedSize;

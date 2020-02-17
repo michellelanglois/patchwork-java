@@ -1,0 +1,106 @@
+{
+  "numBlocksAcross": 2,
+  "numBlocksDown": 2,
+  "blockSize": 4.0,
+  "blocks": [
+    null,
+    null,
+    null,
+    {
+      "blockType": "FRIENDSHIP_STAR",
+      "finishedSize": 4.0,
+      "patches": [
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 270,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            null
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 0,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HST",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 90,
+          "fabrics": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "SQR",
+          "finishedSideLength": 1.3333333333333333,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        }
+      ]
+    }
+  ]
+}

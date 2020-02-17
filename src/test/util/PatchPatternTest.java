@@ -48,15 +48,15 @@ public class PatchPatternTest {
             assertEquals(4, p.getFinishedSideLength());
         }
 
-        assertTrue(pattern.get(0) instanceof Square && pattern.get(0).containsFabric("A"));
+        assertTrue(pattern.get(0) instanceof Square && pattern.get(0).containsFabric("B"));
         assertTrue(pattern.get(1) instanceof HalfSquareTriangle && pattern.get(1).getRotation() == 270);
-        assertTrue(pattern.get(2) instanceof Square && pattern.get(2).containsFabric("A"));
+        assertTrue(pattern.get(2) instanceof Square && pattern.get(2).containsFabric("B"));
         assertTrue(pattern.get(3) instanceof HalfSquareTriangle && pattern.get(3).getRotation() == 180);
-        assertTrue(pattern.get(4) instanceof Square && pattern.get(4).containsFabric("B"));
+        assertTrue(pattern.get(4) instanceof Square && pattern.get(4).containsFabric("A"));
         assertTrue(pattern.get(5) instanceof HalfSquareTriangle && pattern.get(5).getRotation() == 0);
-        assertTrue(pattern.get(6) instanceof Square && pattern.get(6).containsFabric("A"));
+        assertTrue(pattern.get(6) instanceof Square && pattern.get(6).containsFabric("B"));
         assertTrue(pattern.get(7) instanceof HalfSquareTriangle && pattern.get(7).getRotation() == 90);
-        assertTrue(pattern.get(8) instanceof Square && pattern.get(8).containsFabric("A"));
+        assertTrue(pattern.get(8) instanceof Square && pattern.get(8).containsFabric("B"));
     }
 
     @Test

@@ -29,6 +29,9 @@ public class Square extends Patch {
         }
     }
 
+    // EFFECTS: Creates a square patch; used only when deserializing patch data from JSON using GSON
+    private Square() { }
+
     @Override
     // EFFECTS: calculates the total fabric (in square inches) needed to make the patch
     protected double getCalculation() {

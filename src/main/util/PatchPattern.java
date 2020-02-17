@@ -45,7 +45,7 @@ public class PatchPattern {
         greekSquarePatches.add(new HalfSquare(size, 270));
         greekSquarePatches.add(new HalfSquareTriangle(size, 90));
         greekSquarePatches.add(new HalfSquare(size, 180));
-        greekSquarePatches.add(new Square(size, "B"));
+        greekSquarePatches.add(new Square(size, "A"));
         greekSquarePatches.add(new HalfSquare(size, 0));
         greekSquarePatches.add(new HalfSquareTriangle(size, 270));
         greekSquarePatches.add(new HalfSquare(size, 270));
@@ -56,10 +56,6 @@ public class PatchPattern {
 
     // REQUIRES: size > 0
     // EFFECTS: returns list of patches that make up a checkerboard block, in the given size
-    //    ********........********
-    //    ********........********
-    //    ********........********
-    //    ********........********
     //    ........********........
     //    ........********........
     //    ........********........
@@ -68,6 +64,11 @@ public class PatchPattern {
     //    ********........********
     //    ********........********
     //    ********........********
+    //    ........********........
+    //    ........********........
+    //    ........********........
+    //    ........********........
+
     public List<Patch> getCheckerboardPattern(double size) {
         ArrayList<Patch> checkerboardPatches = new ArrayList<>();
         checkerboardPatches.add(new Square(size, "A"));
@@ -99,15 +100,15 @@ public class PatchPattern {
     //    ***************.********
     public List<Patch> getFriendshipStarPattern(double size) {
         ArrayList<Patch> friendshipStarPatches = new ArrayList<>();
-        friendshipStarPatches.add(new Square(size, "A"));
-        friendshipStarPatches.add(new HalfSquareTriangle(size,270));
-        friendshipStarPatches.add(new Square(size, "A"));
-        friendshipStarPatches.add(new HalfSquareTriangle(size, 180));
         friendshipStarPatches.add(new Square(size, "B"));
+        friendshipStarPatches.add(new HalfSquareTriangle(size,270));
+        friendshipStarPatches.add(new Square(size, "B"));
+        friendshipStarPatches.add(new HalfSquareTriangle(size, 180));
+        friendshipStarPatches.add(new Square(size, "A"));
         friendshipStarPatches.add(new HalfSquareTriangle(size, 0));
-        friendshipStarPatches.add(new Square(size, "A"));
+        friendshipStarPatches.add(new Square(size, "B"));
         friendshipStarPatches.add(new HalfSquareTriangle(size, 90));
-        friendshipStarPatches.add(new Square(size, "A"));
+        friendshipStarPatches.add(new Square(size, "B"));
 
         return friendshipStarPatches;
     }

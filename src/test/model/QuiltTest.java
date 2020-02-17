@@ -118,8 +118,8 @@ class QuiltTest {
     public void testCalculateFabricNonEmptyQuiltVarious() {
         testQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 1);
         testQuilt.addBlock(BlockType.GREEK_SQUARE, 9);
-        assertEquals(89.0, testQuilt.calculateFabric("A"));
-        assertEquals(77.0, testQuilt.calculateFabric("B"));
+        assertEquals(77.0, testQuilt.calculateFabric("A"));
+        assertEquals(89.0, testQuilt.calculateFabric("B"));
     }
 
     @Test
