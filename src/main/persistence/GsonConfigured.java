@@ -15,7 +15,7 @@ Configurations to the standard Gson object include:
 
 public class GsonConfigured {
 
-    Gson gson;
+    private Gson gson;
 
     public GsonConfigured() {
         this.gson = configureGson();

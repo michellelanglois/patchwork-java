@@ -10,9 +10,9 @@ Fabrics are initially hard-coded to "A" and "B"; this will be augmented in futur
 
 public abstract class Patch {
 
-    public static final String HALF_TRIANGLE = "HST";
-    public static final String HALF_SQUARE = "HSQ";
-    public static final String SQUARE = "SQR";
+    public static final String HALF_TRIANGLE = "HalfSquareTriangle";
+    public static final String HALF_SQUARE = "HalfSquare";
+    public static final String SQUARE = "Square";
 
     protected String type;
     protected double finishedSideLength;

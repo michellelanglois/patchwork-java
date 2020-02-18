@@ -1,8 +1,12 @@
 package model.blocks;
 
+import exceptions.BlockUnavailableException;
 import model.patches.Patch;
-import util.PatchPattern;
+import persistence.Reader;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -14,18 +18,21 @@ public class Block {
 
     private static final int NUM_OF_PATCHES = 9;
 
-    private BlockType blockType;
+    private String blockType;
     private double finishedSize;
     private List<Patch> patches;
 
     // REQUIRES: finishedSize > 0
     // EFFECTS: creates a block (list of patches) of the given type and of the given finished side length (in inches)
-    public Block(BlockType blockType, double finishedSize) {
+    public Block(String blockType, double finishedSize) throws BlockUnavailableException {
         this.blockType = blockType;
         this.finishedSize = finishedSize;
 
-        PatchPattern pattern = new PatchPattern();
-        this.patches = pattern.getPattern(blockType, getFinishedPatchSize());
+        if (BlockType.isAvailableBlock(blockType)) {
+            this.patches = getPatchesFromPattern(blockType);
+        } else {
+            throw new BlockUnavailableException();
+        }
     }
 
     // EFFECTS: Creates a block; used only when deserializing saved block data from JSON using GSON
@@ -40,14 +47,29 @@ public class Block {
         return patches;
     }
 
-    // EFFECTS: returns block type as a string
     public String getBlockType() {
-        return blockType.getBlockName();
+        return blockType;
     }
 
     // EFFECTS: calculates the finished side length (in inches) of each patch that comprises the block
     public double getFinishedPatchSize() {
         return finishedSize / Math.sqrt(NUM_OF_PATCHES);
+    }
+
+    // EFFECTS: returns a list of patches for given block type of correct size
+    private ArrayList<Patch> getPatchesFromPattern(String blockType) throws BlockUnavailableException {
+        try {
+            // reads pattern of patches from file
+            String fileWithPattern = BlockType.getAvailableBlockMap().get(blockType);
+            ArrayList<Patch> patches = Reader.readPatchPattern(new File(fileWithPattern));
+            // sets correct patch size
+            for (Patch p : patches) {
+                p.setFinishedSideLength(getFinishedPatchSize());
+            }
+            return patches;
+        } catch (IOException e) {
+            throw new BlockUnavailableException();
+        }
     }
 
     // EFFECTS: counts the number of patches of the given type needed to make the block

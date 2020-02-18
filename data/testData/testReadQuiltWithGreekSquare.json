@@ -5,7 +5,7 @@
   "blocks": [
     null,
     {
-      "blockType": "GREEK_SQUARE",
+      "blockType": "greek square",
       "finishedSize": 9.0,
       "patches": [
         {

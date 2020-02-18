@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.BlockUnavailableException;
 import model.blocks.Block;
 import model.blocks.BlockType;
 import model.patches.Patch;
@@ -27,8 +28,8 @@ class QuiltTest {
     }
 
     @Test
-    public void testAddBlockToEmptyQuiltPos0() {
-        testQuilt.addBlock( BlockType.FRIENDSHIP_STAR, 0);
+    public void testAddBlockToEmptyQuiltPos0() throws BlockUnavailableException {
+        testQuilt.addBlock( "friendship star", 0);
         Block targetBlockSlot = testQuilt.getBlocks().get(0);
         assertEquals("friendship star", targetBlockSlot.getBlockType());
         assertEquals(6.0, targetBlockSlot.getFinishedSize());
@@ -39,8 +40,8 @@ class QuiltTest {
     }
 
     @Test
-    public void testAddBlockToEmptyQuiltPosInMiddle() {
-        testQuilt.addBlock(BlockType.CHECKERBOARD, 6);
+    public void testAddBlockToEmptyQuiltPosInMiddle() throws BlockUnavailableException {
+        testQuilt.addBlock("checkerboard", 6);
         Block targetBlockSlot = testQuilt.getBlocks().get(6);
         assertEquals("checkerboard", targetBlockSlot.getBlockType());
         assertEquals(6.0, targetBlockSlot.getFinishedSize());
@@ -54,11 +55,11 @@ class QuiltTest {
     }
 
     @Test
-    public void testAddBlockToNonEmptyQuiltPos() {
-        testQuilt.addBlock(BlockType.CHECKERBOARD, 6);
+    public void testAddBlockToNonEmptyQuiltPos() throws BlockUnavailableException {
+        testQuilt.addBlock("checkerboard", 6);
         Block targetBlockSlot = testQuilt.getBlocks().get(6);
         assertEquals("checkerboard", targetBlockSlot.getBlockType());
-        testQuilt.addBlock(BlockType.GREEK_SQUARE, 6);
+        testQuilt.addBlock("greek square", 6);
 
         Block newTargetBlockSlot = testQuilt.getBlocks().get(6);
         assertEquals("greek square", newTargetBlockSlot.getBlockType());
@@ -80,8 +81,8 @@ class QuiltTest {
     }
 
     @Test
-    public void testRemoveBlockFromNonEmptyPos() {
-        testQuilt.addBlock(BlockType.CHECKERBOARD, 4);
+    public void testRemoveBlockFromNonEmptyPos() throws BlockUnavailableException {
+        testQuilt.addBlock("checkerboard", 4);
         testQuilt.removeBlock(4);
         Block targetBlockSlot = testQuilt.getBlocks().get(4);
         assertNull(targetBlockSlot);
@@ -93,9 +94,9 @@ class QuiltTest {
     }
 
     @Test
-    public void testCountPatchesNonEmptyQuilt() {
-        testQuilt.addBlock(BlockType.CHECKERBOARD, 1);
-        testQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 5);
+    public void testCountPatchesNonEmptyQuilt() throws BlockUnavailableException {
+        testQuilt.addBlock("checkerboard", 1);
+        testQuilt.addBlock("friendship star", 5);
         assertEquals(14, testQuilt.countPatches(Patch.SQUARE));
         assertEquals(4, testQuilt.countPatches(Patch.HALF_TRIANGLE));
         assertEquals(0, testQuilt.countPatches(Patch.HALF_SQUARE));
@@ -107,17 +108,17 @@ class QuiltTest {
     }
 
     @Test
-    public void testCalculateFabricNonEmptyQuiltCheckerboards() {
-        testQuilt.addBlock(BlockType.CHECKERBOARD, 4);
-        testQuilt.addBlock(BlockType.CHECKERBOARD, 2);
+    public void testCalculateFabricNonEmptyQuiltCheckerboards() throws BlockUnavailableException {
+        testQuilt.addBlock("checkerboard", 4);
+        testQuilt.addBlock("checkerboard", 2);
         assertEquals(63.0, testQuilt.calculateFabric("A"));
         assertEquals(50.0, testQuilt.calculateFabric("B"));
     }
 
     @Test
-    public void testCalculateFabricNonEmptyQuiltVarious() {
-        testQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 1);
-        testQuilt.addBlock(BlockType.GREEK_SQUARE, 9);
+    public void testCalculateFabricNonEmptyQuiltVarious() throws BlockUnavailableException {
+        testQuilt.addBlock("friendship star", 1);
+        testQuilt.addBlock("greek square", 9);
         assertEquals(77.0, testQuilt.calculateFabric("A"));
         assertEquals(89.0, testQuilt.calculateFabric("B"));
     }
@@ -138,9 +139,9 @@ class QuiltTest {
     }
 
     @Test
-    public void testBlockListToString() {
+    public void testBlockListToString() throws BlockUnavailableException {
         Quilt smallQuilt = new Quilt(2, 2, 3);
-        smallQuilt.addBlock(BlockType.FRIENDSHIP_STAR, 2);
+        smallQuilt.addBlock("friendship star", 2);
         String expectedString = "Block 1: empty\nBlock 2: empty\nBlock 3: friendship star\nBlock 4: empty\n";
         assertEquals(expectedString, smallQuilt.blockListToString());
     }

@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.BlockUnavailableException;
 import model.Quilt;
 import model.blocks.BlockType;
 import model.patches.Patch;
@@ -89,7 +90,7 @@ public class QuiltApp {
         } catch (FileNotFoundException e) {
             System.out.println("Sorry! You don't have a quilt saved. Why don't you start a new one?");
         } catch (IOException e) {
-            System.out.println("Sorry, a quilt could not be loaded. Why don't you start a new one?");
+            e.printStackTrace();
         }
     }
 
@@ -216,14 +217,19 @@ public class QuiltApp {
         printAvailableBlocks();
 
         System.out.println("\nWhat block do you want to add?");
-        BlockType blockChoice = selectBlockToAdd();
+        String blockChoice = selectBlockToAdd();
 
         System.out.println("\nWhere do you want to add it?");
         int slotChoice = selectSlot();
         int slotIndex = slotChoice - 1;
 
-        quilt.addBlock(blockChoice, slotIndex);
-        System.out.println("\nAmazing! You just added a " + blockChoice.getBlockName()
+        try {
+            quilt.addBlock(blockChoice, slotIndex);
+        } catch (BlockUnavailableException e) {
+            System.out.println("Sorry, that block isn't available to add to your quilt.");
+            e.printStackTrace();
+        }
+        System.out.println("\nAmazing! You just added a " + blockChoice
                 + " to slot " + slotChoice + ". Looking good!");
     }
 
@@ -256,20 +262,20 @@ public class QuiltApp {
     }
 
     // EFFECT: prompts user to select a block to add and returns the block name
-    private BlockType selectBlockToAdd() {
+    private String selectBlockToAdd() {
         String blockChoice = input.nextLine().toLowerCase();
-        while (!BlockType.BLOCK_MAP.containsKey(blockChoice)) {
+        while (!BlockType.getAvailableBlockMap().containsKey(blockChoice)) {
             System.out.println("Type the name of the block exactly as listed above.");
             blockChoice = input.nextLine().toLowerCase();
         }
-        return BlockType.BLOCK_MAP.get(blockChoice);
+        return BlockType.getAvailableBlockMap().get(blockChoice);
     }
 
     // EFFECTS: prints out a numbered list of available blocks
     private void printAvailableBlocks() {
         int i = 1;
         System.out.println("\nHere are the blocks you can add to your quilt:");
-        for (String blockName : BlockType.BLOCK_MAP.keySet()) {
+        for (String blockName : BlockType.getAvailableBlockMap().keySet()) {
             System.out.println("     [" + i + "] " + blockName);
             i++;
         }
@@ -319,6 +325,7 @@ public class QuiltApp {
             System.out.println("\nQuilt saved!");
         } catch (IOException e) {
             System.out.println("\nSorry! We couldn't save your quilt.");
+            e.printStackTrace();
         }
     }
 

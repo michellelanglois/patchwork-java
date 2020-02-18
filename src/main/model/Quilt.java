@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.BlockUnavailableException;
 import model.blocks.Block;
 import model.blocks.BlockType;
 import persistence.GsonConfigured;
@@ -83,7 +84,7 @@ public class Quilt implements Saveable {
     // REQUIRES: slot is >= 0 and < totalBlocks
     // MODIFIES: this
     // EFFECTS: constructs block of given name in the given slot of the quilt; replaces current block if one exists
-    public void addBlock(BlockType blockType, int slot) {
+    public void addBlock(String blockType, int slot) throws BlockUnavailableException {
         Block blockToAdd = new Block(blockType, blockSize);
         blocks.set(slot, blockToAdd);
     }

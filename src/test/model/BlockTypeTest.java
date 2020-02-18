@@ -1,38 +1,37 @@
 package model;
 
+import exceptions.BlockUnavailableException;
 import model.blocks.BlockType;
-import org.junit.jupiter.api.BeforeEach;
+
+import model.patches.Patch;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockTypeTest {
 
-    BlockType blockType;
-
-    @BeforeEach
-    public void runBefore() {
-        blockType = BlockType.CHECKERBOARD;
-    }
-
-    @Test
-    public void testConstructor() {
-        assertEquals("checkerboard", blockType.getBlockName());
-    }
-
     @Test
     public void testBlockMapCreation() {
-        assertEquals(3, BlockType.BLOCK_MAP.size());
+        assertTrue(BlockType.getAvailableBlockMap().size() > 0);
 
-        assertTrue(BlockType.BLOCK_MAP.containsKey("checkerboard"));
-        assertTrue(BlockType.BLOCK_MAP.containsValue(BlockType.CHECKERBOARD));
+        assertTrue(BlockType.getAvailableBlockMap().containsKey("checkerboard"));
+        assertTrue(BlockType.getAvailableBlockMap().containsValue("./data/blockPatterns/checkerboard.json"));
 
-        assertTrue(BlockType.BLOCK_MAP.containsKey("friendship star"));
-        assertTrue(BlockType.BLOCK_MAP.containsValue(BlockType.FRIENDSHIP_STAR));
+        assertTrue(BlockType.getAvailableBlockMap().containsKey("friendship star"));
+        assertTrue(BlockType.getAvailableBlockMap().containsValue("./data/blockPatterns/friendship-star.json"));
 
-        assertTrue(BlockType.BLOCK_MAP.containsKey("greek square"));
-        assertTrue(BlockType.BLOCK_MAP.containsValue(BlockType.GREEK_SQUARE));
+        assertTrue(BlockType.getAvailableBlockMap().containsKey("greek square"));
+        assertTrue(BlockType.getAvailableBlockMap().containsValue("./data/blockPatterns/greek-square.json"));
 
-        assertFalse(BlockType.BLOCK_MAP.containsKey("a"));
-
+        assertFalse(BlockType.getAvailableBlockMap().containsKey("a"));
     }
+
+    @Test
+    public void testIsValidBlock() {
+        assertTrue(BlockType.isAvailableBlock("checkerboard"));
+        assertFalse(BlockType.isAvailableBlock("a"));
+    }
+
 }
