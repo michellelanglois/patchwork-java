@@ -18,11 +18,11 @@ public class BlockType {
     //          creates map once at program start
     // NOTE: Code for the creation of the BLOCK_MAP is based on a pattern from Joshua Bloch, Effective Java
     private static Map<String, String> makeAvailableBlockMap() {
-        List<String> blockFileNames = getBlockFileNames();
+        ArrayList<String> blockFiles = getBlockFileNames(patternFileFolder);
         Map<String, String> map = new HashMap<>();
-        for (String fileName : blockFileNames) {
-            String blockName = formatBlockName(fileName);
-            map.put(blockName, fileName);
+        for (String file : blockFiles) {
+            String blockName = formatBlockName(file);
+            map.put(blockName, file);
         }
         return Collections.unmodifiableMap(map);
     }
@@ -37,29 +37,23 @@ public class BlockType {
         return getAvailableBlockMap().containsKey(blockName);
     }
 
-    // EFFECTS: returns the block file name associated with the block
-    public static String getBlockFileName(String blockName) {
-        return getAvailableBlockMap().get(blockName);
-    }
-
-    // EFFECTS: helper method to return a current list of files in the block patterns folder
-    private static File[] getBlockFiles() {
-        File folder = new File(patternFileFolder);
-        return folder.listFiles();
+    // EFFECTS: returns the file where a block pattern is stored
+    public static String getBlockFileName(String blockType) {
+        return blockMap.get(blockType);
     }
 
     // EFFECTS: helper method to return a current list of file names in the block patterns folder
-    private static List<String> getBlockFileNames() {
-        File[] listOfFiles = getBlockFiles();
-        List<String> listOfFileNames = new ArrayList<>();
-        if (listOfFiles != null) {
-            for (File listOfFile : listOfFiles) {
-                if (listOfFile.isFile()) {
-                    listOfFileNames.add(patternFileFolder + listOfFile.getName());
+    public static ArrayList<String> getBlockFileNames(String folder) {
+        File[] allFiles = new File(folder).listFiles();
+        ArrayList<String> filteredFiles = new ArrayList<>();
+        if (allFiles != null) {
+            for (File file : allFiles) {
+                if (file.isFile()) {
+                    filteredFiles.add(file.toString());
                 }
             }
         }
-        return listOfFileNames;
+        return filteredFiles;
     }
 
     // EFFECTS: helper method to format block file names as strings that can be used throughout the program
