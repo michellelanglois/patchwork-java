@@ -20,7 +20,7 @@ public class WriterTest {
     private Quilt testQuilt;
 
     @BeforeEach
-    void runBefore() throws BlockUnavailableException {
+    public void runBefore() throws BlockUnavailableException {
         testQuilt = new Quilt(2, 2, 4);
         testQuilt.addBlock("friendship star", 3);
         try {
@@ -33,7 +33,7 @@ public class WriterTest {
     }
 
     @Test
-    void testWriteQuiltNewFileNoExceptionExpected() {
+    public void testWriteQuiltNewFileNoExceptionExpected() {
         try {
             // read quilt back to ensure data saved correctly
             Quilt readQuilt = Reader.readQuilt(new File(TEST_FILE));
@@ -50,7 +50,7 @@ public class WriterTest {
     }
 
     @Test
-    void testWriteQuiltOldFileNoExceptionExpected() throws BlockUnavailableException{
+    public void testWriteQuiltOldFileNoExceptionExpected() throws BlockUnavailableException{
         try {
             // add another block and try to write to the same file
             testQuilt.addBlock("checkerboard", 2);
@@ -75,7 +75,7 @@ public class WriterTest {
     }
 
     @Test
-    void testWriteQuiltExceptionExpectedBadFileName() {
+    public void testWriteQuiltExceptionExpectedBadFileName() {
         try {
             Writer badFileWriter = new Writer(new File("./data/testData")); // given directory, not file!
             badFileWriter.write(testQuilt);

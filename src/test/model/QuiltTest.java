@@ -2,16 +2,15 @@ package model;
 
 import exceptions.BlockUnavailableException;
 import model.blocks.Block;
-import model.blocks.BlockType;
 import model.patches.Patch;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuiltTest {
 
-    Quilt testQuilt;
+    private Quilt testQuilt;
 
     @BeforeEach
     public void runBefore() {

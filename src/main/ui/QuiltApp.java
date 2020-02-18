@@ -115,7 +115,7 @@ public class QuiltApp {
     }
 
     // EFFECTS: prompts user to input a number of blocks down or across for the quilt, and returns that number
-    public int selectNumOfBlocks() {
+    private int selectNumOfBlocks() {
         int numberOfBlocks = 0;
         while (numberOfBlocks <= 0) {
             System.out.println("Please enter a whole number greater than 0.");
@@ -130,7 +130,7 @@ public class QuiltApp {
     }
 
     // EFFECTS: prompts user to input a block size for the quilt, and returns that number
-    public double selectSizeOfBlocks() {
+    private double selectSizeOfBlocks() {
         double sizeOfBlocks = 0.0;
         while (sizeOfBlocks <= 0.0) {
             System.out.println("Please enter a number greater than 0. You can use decimals.");
@@ -145,7 +145,7 @@ public class QuiltApp {
 
     // MODIFIES: this
     // EFFECTS: prompts user through the process of designing their quilt
-    public void designQuilt() {
+    private void designQuilt() {
         boolean designQuilt = true;
         displayQuiltMenu();
 
@@ -166,7 +166,7 @@ public class QuiltApp {
     }
     
     // EFFECTS: prints out the quilt construction menu for the quilting app
-    public void displayQuiltMenu() {
+    private void displayQuiltMenu() {
         System.out.println("\n----------");
         System.out.println("\nWhat do you want to do next?");
         System.out.println("\n*** I want to create! ***");
@@ -184,7 +184,7 @@ public class QuiltApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command from quilt menu
-    public void processCommand(String command) {
+    private void processCommand(String command) {
         switch (command) {
             case ADD_BLOCK_CMD:
                 handleAddBlock();
@@ -268,7 +268,7 @@ public class QuiltApp {
             System.out.println("Type the name of the block exactly as listed above.");
             blockChoice = input.nextLine().toLowerCase();
         }
-        return BlockType.getAvailableBlockMap().get(blockChoice);
+        return blockChoice;
     }
 
     // EFFECTS: prints out a numbered list of available blocks

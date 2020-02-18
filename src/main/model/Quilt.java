@@ -1,10 +1,9 @@
 package model;
 
-import exceptions.BlockUnavailableException;
 import model.blocks.Block;
-import model.blocks.BlockType;
 import persistence.GsonConfigured;
 import persistence.Saveable;
+import exceptions.BlockUnavailableException;
 
 import java.io.FileWriter;
 import java.io.IOException;

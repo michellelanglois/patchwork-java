@@ -4,24 +4,20 @@ package model.blocks;
 Represents all blocks pre-programmed into Patchwork
  */
 
-import exceptions.BlockUnavailableException;
-import model.patches.Patch;
-import persistence.Reader;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class BlockType {
 
     private static final String patternFileFolder = "./data/blockPatterns/";
     private static final String patternFileType = ".json";
+    private static Map<String, String> blockMap = makeAvailableBlockMap();
 
     // MODIFIES: this
     // EFFECTS: creates a map with block names as keys and block instances as values, for iteration outside the class
     //          creates map once at program start
     // NOTE: Code for the creation of the BLOCK_MAP is based on a pattern from Joshua Bloch, Effective Java
-    public static Map<String, String> getAvailableBlockMap() {
+    private static Map<String, String> makeAvailableBlockMap() {
         List<String> blockFileNames = getBlockFileNames();
         Map<String, String> map = new HashMap<>();
         for (String fileName : blockFileNames) {
@@ -31,9 +27,19 @@ public class BlockType {
         return Collections.unmodifiableMap(map);
     }
 
+    // EFFECTS: returns block map
+    public static Map<String, String> getAvailableBlockMap() {
+        return blockMap;
+    }
+
     // EFFECTS: returns true if block name given is a pre-programmed block
     public static boolean isAvailableBlock(String blockName) {
         return getAvailableBlockMap().containsKey(blockName);
+    }
+
+    // EFFECTS: returns the block file name associated with the block
+    public static String getBlockFileName(String blockName) {
+        return getAvailableBlockMap().get(blockName);
     }
 
     // EFFECTS: helper method to return a current list of files in the block patterns folder

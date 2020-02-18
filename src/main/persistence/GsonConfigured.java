@@ -1,9 +1,11 @@
 package persistence;
 
+import model.patches.*;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import model.patches.*;
+
 
 /*
 A configured Gson object capable of deserializing JSON objects for this project.
@@ -19,6 +21,11 @@ public class GsonConfigured {
 
     public GsonConfigured() {
         this.gson = configureGson();
+    }
+
+    // getter
+    public Gson getGson() {
+        return gson;
     }
 
     // MODIFIES: this
@@ -42,11 +49,6 @@ public class GsonConfigured {
         patchAdapter.registerSubtype(HalfSquare.class, "b");
         patchAdapter.registerSubtype(HalfSquareTriangle.class, "c");
         return patchAdapter;
-    }
-
-    // getter
-    public Gson getGson() {
-        return gson;
     }
 
 }

@@ -2,11 +2,10 @@ package model;
 
 import exceptions.BlockUnavailableException;
 import model.blocks.Block;
-import model.blocks.BlockType;
 import model.patches.Patch;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockTest {
@@ -90,6 +89,15 @@ public class BlockTest {
     @Test
     public void testCalculateFabricsDoesNotContainsFabric() {
         assertEquals(0, checkerboardBlock.calculateFabric("C"));
+    }
+
+    @Test
+    public void testGetPatchesFromPatternBadFile() {
+        try {
+            greekSquareBlock.getPatchesFromPattern("corruptedFile");
+        } catch (BlockUnavailableException e) {
+            // all good
+        }
     }
 
 }

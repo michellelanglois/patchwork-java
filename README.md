@@ -16,9 +16,10 @@ As a new quilter who wanted to throw pre-made patterns to the wind and design my
 - As a user, I want to be able to calculate how many of each type of patch I need to create my quilt.
 - As a user, I want to be able to calculate the total fabric requirements for my quilt, including backing and binding.
 ### For Phase 2 of Patchwork:
-- As a user, I want to be able to save my quilt to file at any time while I design it
-- As a user, when I select the quit option from the application menu, I want to be prompted to save my quilt to file
-- As a user, I want to be able to optionally load my quilt from file when the program starts
+- As a user, I want to be able to save my quilt to file at any time while I design it.
+- As a user, when I select the quit option from the application menu, I want to be prompted to save my quilt to file.
+- As a user, I want to be able to optionally load my quilt from file when the program starts.
+- As a developer, I want to be able to easily add pre-programmed blocks to Patchwork so they are available to users.
 
 ## Future features
 In future iterations of Patchwork I hope to:

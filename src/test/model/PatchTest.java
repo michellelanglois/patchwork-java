@@ -1,9 +1,7 @@
 package model;
 
-import model.patches.HalfSquare;
-import model.patches.HalfSquareTriangle;
-import model.patches.Patch;
-import model.patches.Square;
+import model.patches.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

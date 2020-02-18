@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ReaderTest {
 
     @Test
-    void testReadFileEmptyQuilt() {
+    public void testReadFileEmptyQuilt() {
         try {
             Quilt quilt = Reader.readQuilt(new File("./data/testData/testReadEmptyQuilt.json"));
 
@@ -36,7 +36,7 @@ public class ReaderTest {
     }
 
     @Test
-    void readFileQuiltWithBlocks() {
+    public void readFileQuiltWithBlocks() {
         try {
             Quilt quilt = Reader.readQuilt(new File("./data/testData/testReadQuiltWithGreekSquare.json"));
 
@@ -76,7 +76,7 @@ public class ReaderTest {
     }
 
     @Test
-    void testReadQuiltFileExceptionExpected() {
+    public void testReadQuiltFileExceptionExpected() {
         try {
             Reader.readQuilt(new File("./path/does/not/exist/testQuilt.json"));
             fail("IOException should have been thrown");
@@ -86,7 +86,7 @@ public class ReaderTest {
     }
 
     @Test
-    void testReadPatchesGreekSquare() {
+    public void testReadPatchesGreekSquare() {
         try {
             ArrayList<Patch> patches = Reader.readPatchPattern(new File("./data/blockPatterns/greek-square.json"));
 
@@ -109,7 +109,7 @@ public class ReaderTest {
     }
 
     @Test
-    void testReadPatchesFriendshipStar() {
+    public void testReadPatchesFriendshipStar() {
         try {
             ArrayList<Patch> patches = Reader.readPatchPattern(new File("./data/blockPatterns/friendship-star.json"));
 
@@ -132,7 +132,7 @@ public class ReaderTest {
     }
 
     @Test
-    void testReadPatchesFileExceptionExpected() {
+    public void testReadPatchesFileExceptionExpected() {
         try {
             Reader.readPatchPattern(new File("./data/blockPatterns/friendship.json"));
             fail("IOException should have been thrown");

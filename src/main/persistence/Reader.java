@@ -1,9 +1,10 @@
 package persistence;
 
 
-import com.google.gson.reflect.TypeToken;
 import model.Quilt;
 import model.patches.Patch;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +20,7 @@ This reader uses an external library, Gson, to deserialize JSON objects
 
 public class Reader {
 
-    // EFFECTS: reads data from JSON file, deserializes the JSON objects into a Quilt object, and returns the Quilt
+    // EFFECTS: reads data from JSON file, deserializes data into a Quilt object, and returns the Quilt
     public static Quilt readQuilt(File file) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException();
