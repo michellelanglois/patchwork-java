@@ -82,6 +82,7 @@ public class QuiltApp {
         System.out.println("     " + QUIT_CMD + " --> quit");
     }
 
+    // MODIFIES: this
     // EFFECTS: loads a quilt from file if a saved quilt exists; otherwise, returns to main menu
     private void loadQuilt() {
         try {
@@ -317,6 +318,7 @@ public class QuiltApp {
         }
     }
 
+    // EFFECTS: saves the current quilt to file if possible
     private void saveQuilt() {
         try {
             Writer writer = new Writer(new File(QUILT_FILE));
@@ -337,6 +339,7 @@ public class QuiltApp {
         input.close();
     }
 
+    // EFFECTS: promots user to save their quilt
     private void promptToSave() {
         System.out.println("\nDo you want to save your quilt? (y / n)");
         String toSave = input.next().toLowerCase();

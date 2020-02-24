@@ -32,17 +32,16 @@ public class GsonConfigured {
     // EFFECTS: configures the Gson object to serialize null values, pretty print JSON, and recognize Patch subclasses
     private Gson configureGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        // required so that Gson will serialize null values in patches, blocks, and quilt
         gsonBuilder.serializeNulls();
-        // required to make .json file more readable to humans
         gsonBuilder.setPrettyPrinting();
-        // required so that Gson can distinguish Patch subclasses when serializing and deserializing
         gsonBuilder.registerTypeAdapterFactory(makePatchRuntimeTypeAdapterFactory());
         return gsonBuilder.create();
     }
 
     // EFFECTS: creates a RuntimeTypeAdapterFactory capable of recognizing Patch subclasses during serialization
     //          and deserialization
+    // NOTE: code to created RuntimeTypeAdapterFactory adapted from Gson tutorial available at:
+    // https://futurestud.io/tutorials/how-to-deserialize-a-list-of-polymorphic-objects-with-gson
     private RuntimeTypeAdapterFactory<Patch> makePatchRuntimeTypeAdapterFactory() {
         RuntimeTypeAdapterFactory<Patch> patchAdapter = RuntimeTypeAdapterFactory.of(Patch.class, "gsonType");
         patchAdapter.registerSubtype(Square.class, "a");

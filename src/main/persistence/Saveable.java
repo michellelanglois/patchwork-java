@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /*
 Specifies behaviour for all classes that should be saveable to file
+NOTE: Code for this class is copied from the TellerApp project
  */
 
 public interface Saveable {

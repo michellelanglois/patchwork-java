@@ -7,6 +7,7 @@ import java.io.IOException;
 
 /*
 A writer that can write quilt data to a file
+NOTE: code for this class is copied from the TellerApp project
  */
 
 public class Writer {
