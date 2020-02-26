@@ -17,6 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ReaderTest {
 
     @Test
+    public void testConstructor() {
+        Reader reader = new Reader();
+        assertNotNull(reader);
+    }
+
+    @Test
     public void testReadFileEmptyQuilt() {
         try {
             Quilt quilt = Reader.readQuilt(new File("./data/testData/testReadEmptyQuilt.json"));
