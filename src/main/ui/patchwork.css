@@ -1,0 +1,28 @@
+.root{
+    -fx-font-size: 11pt;
+    -fx-font-family: "Avenir-Light";
+}
+
+.button-menu{
+    -fx-font-size: 15pt;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
+
+.button{
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
+
+.header{
+    -fx-font-size: 30pt;
+    -fx-font-family: "Avenir-Medium";
+    -fx-background-color: #FCCD04;
+}
+
+.label-subheader{
+    -fx-font-size: 15pt;
+    -fx-font-family: "Avenir-Medium";
+}
