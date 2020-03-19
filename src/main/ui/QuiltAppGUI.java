@@ -1,9 +1,13 @@
+//TODO: function to add blocks to multiple spots on the quilt
+//TODO: ability to change size of quilt after creating
+//TODO: ability to save color of quilt
+//TODO: move CSS file into data?
+
 package ui;
 
 import exceptions.BlockUnavailableException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,9 +18,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import model.Quilt;
 import model.blocks.Block;
@@ -28,369 +29,188 @@ import persistence.Writer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-//credit Oracle tutorial docs for drag and drop
+/*
+Represents the GUI for Patchwork
+ */
+
 public class QuiltAppGUI extends Application {
 
-    private static Color FABRIC_A_COLOUR = Color.web("#C9D1DB");
-    private static Color FABRIC_B_COLOUR = Color.web("#939AA5");
+    protected static Color FABRIC_A_COLOUR = Color.web("#bbc2cf");
+    protected static Color FABRIC_B_COLOUR = Color.web("#d1d6df");
 
     private static final String QUILT_FILE = "./data/myquilt.json";
 
     private static final int WINDOW_WIDTH = 1500;
     private static final int WINDOW_HEIGHT = WINDOW_WIDTH * 2 / 3;
 
-    private static final Image ICON = new Image("file:./data/icons/quilt.png");
-    private static final Image CANCEL = new Image("file:./data/icons/trash.png");
+    private static final Image PATCHWORK_LOGO = new Image("file:./data/icons/quilt.png");
+    protected static final Image DELETE_ICON = new Image("file:./data/icons/trash.png");
 
-    Quilt quilt;
-    Stage window;
+    private Quilt quilt;
+    private Stage window;
+    private NewQuiltControlsUI quiltControls;
+    private QuiltGridUI quiltGrid;
 
+    //EFFECTS: launches the application
     public static void main(String[] args) {
         launch(args);
     }
 
+    // getters and setters
+    protected void setQuilt(Quilt quilt) {
+        this.quilt = quilt;
+    }
+
+    protected Quilt getQuilt() {
+        return this.quilt;
+    }
+
+    protected QuiltGridUI getQuiltGrid() {
+        return quiltGrid;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes the overall application window and graphics; no quilt is immediately loaded
     @Override
     public void start(Stage window) {
         this.window = window;
         this.quilt = null;
-
-        setApplicationParameters();
+        setParameters();
         initializeGraphics();
     }
 
-    private void setApplicationParameters() {
+    // MODIFIES: this
+    // EFFECTS: sets application parameters, including title of window and exit procedures
+    private void setParameters() {
         window.setTitle("Patchwork");
-        //Icons made by <a href="https://www.flaticon.com/authors/becris" title="Becris">Becris</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-        window.getIcons().add(ICON);
+        window.getIcons().add(PATCHWORK_LOGO);
         window.setOnCloseRequest(e -> {
             e.consume();
             closeProgram();
         });
     }
 
+    // EFFECTS: if quilt != null, displays a confirmation box to user to prompt save, then closes program
+    private void closeProgram() {
+        if (quilt != null) {
+            boolean answer = ConfirmBox.display("Exit", "Do you want to save your quilt before exiting?");
+            if (answer) {
+                saveQuilt();
+            }
+        }
+        window.close();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates application graphics; initializes underlying scene and sets its base pane and CSS styles
     private void initializeGraphics() {
-        BorderPane applicationLayout = new BorderPane();
-        Pane topMenuControls = initializeMenuControls();
-        Pane leftDesignControls = initializeDesignControls();
-        Pane centerQuiltViewer = initializeQuiltPane();
-
-        applicationLayout.setTop(topMenuControls);
-        applicationLayout.setLeft(leftDesignControls);
-        applicationLayout.setCenter(centerQuiltViewer);
-
-        Scene applicationWindow = new Scene(applicationLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
-
+        Pane layout = initializeLayout();
+        Scene applicationWindow = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
         applicationWindow.getStylesheets().add(getClass().getResource("patchwork.css").toExternalForm());
-
         window.setScene(applicationWindow);
         window.show();
     }
 
-    private Pane initializeMenuControls() {
-        HBox menuControls = new HBox(30);
-        menuControls.setAlignment(Pos.CENTER_LEFT);
-        menuControls.setPadding(new Insets(10, 10, 10, 10));
-        menuControls.getStyleClass().add("header");
+    // EFFECTS: creates and returns base layout pane with individual components set
+    private Pane initializeLayout() {
+        BorderPane layout = new BorderPane();
+        layout.getStyleClass().add("root");
 
-        ImageView iconPane = new ImageView();
-        iconPane.setImage(ICON);
+        layout.setTop(initializeMenuArea());
+        layout.setLeft(initializeDesignArea());
+        layout.setCenter(initializeQuiltArea());
 
-        Label patchworkTitle = new Label("PATCHWORK");
-
-        menuControls.getChildren().addAll(
-                iconPane,
-                patchworkTitle,
-                initializeSaveButton(),
-                initializeLoadButton());
-
-        return menuControls;
+        return layout;
     }
 
+    // EFFECTS: creates and returns the menu pane for the application
+    private Pane initializeMenuArea() {
+        HBox menu = new HBox();
+        menu.getStyleClass().add("menu");
+
+        Pane titleArea = initializeTitleArea();
+        Pane menuControlArea = initializeMenuControlArea();
+
+        HBox.setHgrow(titleArea, Priority.ALWAYS);
+        HBox.setHgrow(menuControlArea, Priority.ALWAYS);
+
+        menu.getChildren().addAll(titleArea, menuControlArea);
+
+        return menu;
+    }
+
+    // EFFECTS: creates and returns the quilt design and information pane for the application
+    private Pane initializeDesignArea() {
+        VBox designArea = new VBox();
+        designArea.getStyleClass().addAll("design");
+
+        designArea.setPrefWidth(WINDOW_WIDTH * .40);
+
+        designArea.getChildren().addAll(
+                initializeNewQuiltControlSubArea(),
+                initializeBlockChooserSubArea(),
+                initializeColorPickerSubArea(),
+                initializeCalculationSubArea());
+
+        return designArea;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates and returns the quilt visualization pane for the application
+    private StackPane initializeQuiltArea() {
+        StackPane quiltArea = new StackPane();
+        quiltArea.setPadding(new Insets(10, 10, 10, 10));
+        quiltGrid = new QuiltGridUI(this);
+
+        quiltArea.getChildren().add(quiltGrid);
+
+        return quiltArea;
+    }
+
+    // EFFECTS: creates and returns the title pane for the application
+    private Pane initializeTitleArea() {
+        HBox titleArea = new HBox();
+        titleArea.getStyleClass().add("menu-title");
+
+        ImageView patchworkIcon = new ImageView(PATCHWORK_LOGO);
+        Label patchworkTitle = new Label("PATCHWORK");
+
+        titleArea.getChildren().addAll(patchworkIcon, patchworkTitle);
+
+        return titleArea;
+    }
+
+    // EFFECTS: creates and returns the menu control pane for the application
+    private Pane initializeMenuControlArea() {
+        HBox menuControlArea = new HBox();
+        menuControlArea.getStyleClass().add("menu-controls");
+
+        menuControlArea.getChildren().addAll(initializeLoadButton(), initializeSaveButton());
+
+        return menuControlArea;
+    }
+
+    // EFFECTS: creates a button capable of saving data to file
     private Node initializeSaveButton() {
         Button saveButton = new Button("Save");
+        saveButton.getStyleClass().add("menu-button");
+        saveButton.setTooltip(new Tooltip("Saves your current quilt"));
+
         saveButton.setOnAction(event -> {
             if (quilt != null) {
                 saveQuilt();
+            } else {
+                Alert saveAlert = new Alert(Alert.AlertType.WARNING);
+                saveAlert.setContentText("You need to make a quilt before you can save one!");
+                saveAlert.showAndWait();
             }
         });
-        saveButton.setTooltip(new Tooltip("Saves your current quilt"));
-        saveButton.getStyleClass().add("button-menu");
+
         return saveButton;
     }
 
-    private Node initializeLoadButton() {
-        Button loadButton = new Button("Load");
-        loadButton.setOnAction(event -> {
-            clearQuiltGrid();
-            loadQuilt();
-            renderQuiltGrid();
-            renderQuilt();
-        });
-        loadButton.setTooltip(new Tooltip("Loads your last saved quilt"));
-        loadButton.getStyleClass().add("button-menu");
-        return loadButton;
-    }
-
-    private VBox initializeDesignControls() {
-        VBox designControls = new VBox(20);
-        designControls.setPadding(new Insets(10, 10, 10, 10));
-        designControls.setPrefWidth(WINDOW_WIDTH * .40);
-
-        Label newQuiltControlLabel = new Label("Let's get creative! What size quilt do you want to make?");
-        newQuiltControlLabel.getStyleClass().add("label-subheader");
-        Pane newQuiltControls = initializeNewQuiltControls();
-        Label blockChooserLabel = new Label("Choose your favourite. Add a block to your quilt.");
-        blockChooserLabel.getStyleClass().add("label-subheader");
-        ScrollPane blockChooser = initializeBlockChooser();
-        Label colorPickerLabel = new Label("Time to colour your world.");
-        colorPickerLabel.getStyleClass().add("label-subheader");
-        HBox colorPicker = initializeColorPicker();
-        Label calculationPaneLabel = new Label("Quilt math sucks. Let someone else do it for you.");
-        calculationPaneLabel.getStyleClass().add("label-subheader");
-        Pane calculationPane = initializeCalculationPane();
-
-        designControls.getChildren().addAll(newQuiltControlLabel, newQuiltControls, blockChooserLabel, blockChooser,
-                colorPickerLabel, colorPicker, calculationPaneLabel, calculationPane);
-
-        return designControls;
-    }
-
-    private GridPane initializeNewQuiltControls() {
-        GridPane newQuiltControls = new GridPane();
-        newQuiltControls.setPadding(new Insets(10, 10, 10, 10));
-        newQuiltControls.setVgap(8);
-        newQuiltControls.setHgap(10);
-
-        Label blocksAcrossLabel = new Label("Blocks across:");
-        Label blocksDownLabel = new Label("Blocks down:");
-        Label blocksSizeLabel = new Label("Block size (inches): ");
-        Spinner<Integer> blocksAcross = new Spinner<>(1, 36, 1);
-        Spinner<Integer> blocksDown = new Spinner<>(1, 36, 1);
-        Spinner<Double> blockSize = new Spinner<>(3.0, 18.0, 3.0, 1.5);
-
-        Button startNewQuiltButton = new Button("Create");
-        startNewQuiltButton.setTooltip(new Tooltip("Create a new quilt of chosen size"));
-
-        Button resetStartNewQuiltButton = new Button("Restart");
-        resetStartNewQuiltButton.setTooltip(new Tooltip("Allows you to create a different quilt"));
-        resetStartNewQuiltButton.setDisable(true);
-
-        startNewQuiltButton.setOnAction(event -> {
-            quilt = new Quilt(blocksAcross.getValue(), blocksDown.getValue(), blockSize.getValue());
-            clearQuiltGrid();
-            renderQuiltGrid();
-            renderQuilt();
-            blocksAcross.setDisable(true);
-            blocksDown.setDisable(true);
-            blockSize.setDisable(true);
-            startNewQuiltButton.setDisable(true);
-            resetStartNewQuiltButton.setDisable(false);
-        });
-
-        resetStartNewQuiltButton.setOnAction(event -> {
-            quilt = null;
-            clearQuiltGrid();
-            blocksAcross.setDisable(false);
-            blocksDown.setDisable(false);
-            blockSize.setDisable(false);
-            startNewQuiltButton.setDisable(false);
-            resetStartNewQuiltButton.setDisable(true);
-        });
-
-        GridPane.setConstraints(blocksAcrossLabel, 0, 0);
-        GridPane.setConstraints(blocksDownLabel, 0, 1);
-        GridPane.setConstraints(blocksSizeLabel, 0, 2);
-        GridPane.setConstraints(blocksAcross, 1, 0);
-        GridPane.setConstraints(blocksDown, 1, 1);
-        GridPane.setConstraints(blockSize, 1, 2);
-        GridPane.setConstraints(startNewQuiltButton, 2, 1);
-        GridPane.setConstraints(resetStartNewQuiltButton, 2, 2);
-
-        newQuiltControls.getChildren().addAll(blocksAcrossLabel, blocksDownLabel, blocksSizeLabel,
-                blocksAcross, blocksDown, blockSize, startNewQuiltButton, resetStartNewQuiltButton);
-
-        return newQuiltControls;
-    }
-
-    private ScrollPane initializeBlockChooser() {
-        ScrollPane blockScroller = new ScrollPane();
-        int height = WINDOW_HEIGHT / 5;
-        blockScroller.setPadding(new Insets(10, 10, 10, 10));
-        Tooltip tooltip = new Tooltip("Drag and drop blocks to design your quilt");
-        Tooltip.install(blockScroller, tooltip);
-        blockScroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        blockScroller.setPrefHeight(height);
-
-        HBox blockImages = renderAvailableBlocks(height - 20);
-
-        blockScroller.setContent(blockImages);
-
-        return blockScroller;
-    }
-
-    private HBox initializeColorPicker() {
-        HBox colorPickerBox = new HBox(20);
-        colorPickerBox.setPadding(new Insets(10, 10, 10, 10));
-        Tooltip tooltip = new Tooltip("Choose colours for your quilt");
-        Tooltip.install(colorPickerBox, tooltip);
-        Label fabricALabel = new Label("Fabric A");
-        Label fabricBLabel = new Label("Fabric B");
-        ColorPicker colorPickerA = new ColorPicker();
-        ColorPicker colorPickerB = new ColorPicker();
-        colorPickerBox.getChildren().addAll(fabricALabel, colorPickerA, fabricBLabel, colorPickerB);
-
-        colorPickerA.setOnAction(event -> {
-            FABRIC_A_COLOUR = colorPickerA.getValue();
-            if (quilt != null) {
-                renderQuilt();
-            }
-        });
-
-        colorPickerB.setOnAction(event -> {
-            FABRIC_B_COLOUR = colorPickerB.getValue();
-            if (quilt != null) {
-                renderQuilt();
-            }
-        });
-
-        return colorPickerBox;
-    }
-
-    private VBox initializeCalculationPane() {
-        VBox calculationPane = new VBox(20);
-        calculationPane.setPadding(new Insets(10, 10, 10, 10));
-
-        Button calculateButton = new Button("Tell me how much of everything I need!");
-        TextArea calculateAnswer = new TextArea();
-        calculateAnswer.setEditable(false);
-
-        calculateButton.setOnAction(event -> {
-            if (quilt != null) {
-                double fabricAmountA = quilt.calculateFabric("A");
-                double fabricAmountB = quilt.calculateFabric("B");
-                double fabricAmountBacking = quilt.calculateTotalBacking();
-                double fabricAmountBinding = quilt.calculateTotalBinding();
-                calculateAnswer.setText("FABRIC NEEDED: \n"
-                        + "You need " + fabricAmountA + " square inches of fabric A.\n"
-                        + "You need " + fabricAmountB + " square inches of fabric B.\n"
-                        + "You need " + fabricAmountBacking + " square inches of backing fabric.\n"
-                        + "You need " + fabricAmountBinding + " square inches of binding fabric.\n"
-                        + "\nPATCHES NEEDED: \n"
-                        + "You need " + quilt.countPatches(Patch.SQUARE) + " square patches.\n"
-                        + "You need " + quilt.countPatches(Patch.HALF_SQUARE) + " half-square patches.\n"
-                        + "You need " + quilt.countPatches(Patch.HALF_TRIANGLE) + " half-square triangle patches.");
-            } else {
-                calculateAnswer.setText("You need to create or load a quilt first!");
-            }
-        });
-
-        calculationPane.getChildren().addAll(calculateAnswer, calculateButton);
-
-        return calculationPane;
-
-    }
-
-    private StackPane initializeQuiltPane() {
-        StackPane quiltPane = new StackPane();
-        quiltPane.setPadding(new Insets(10, 10, 10, 10));
-
-
-        GridPane emptyQuiltGrid = new GridPane();
-        emptyQuiltGrid.setId("quiltGrid");
-
-        quiltPane.getChildren().add(emptyQuiltGrid);
-
-        return quiltPane;
-    }
-
-    private HBox renderAvailableBlocks(double height) {
-        HBox blockImages = new HBox(10);
-        blockImages.setPadding(new Insets(10, 10, 10, 10));
-
-        // create list of dummy template blocks
-        List<Block> blocks = new ArrayList<>();
-        for (String blockName : BlockType.getAvailableBlockMap().keySet()) {
-            try {
-                blocks.add(new Block(blockName, 0));
-            } catch (BlockUnavailableException e) {
-                continue;
-            }
-        }
-
-        // render images of blocks
-        double blockSize = height * 3 / 4;
-        for (Block block : blocks) {
-            GridPane blockImage = renderBlock(block, blockSize);
-
-            blockImage.setOnDragDetected(event -> {
-                /* drag was detected, start a drag-and-drop gesture*/
-                /* allow any transfer mode */
-                Dragboard db = blockImage.startDragAndDrop(TransferMode.ANY);
-                db.setDragView(blockImage.snapshot(null, null));
-
-                /* Put a string on a dragboard */
-                ClipboardContent content = new ClipboardContent();
-                content.putString(block.getBlockType());
-                db.setContent(content);
-                event.consume();
-            });
-
-            blockImages.getChildren().add(blockImage);
-        }
-
-        return blockImages;
-    }
-
-    private GridPane renderBlock(Block block, double size) {
-        GridPane blockImage = new GridPane();
-
-        List<Patch> patches = block.getPatches();
-        for (int i = 0; i < patches.size(); i++) {
-            Patch patch = patches.get(i);
-            StackPane patchImage = renderPatch(patch, size / 3.0);
-            int row = i / 3;
-            int column = i % 3;
-            blockImage.add(patchImage, column, row);
-        }
-        return blockImage;
-    }
-
-    private StackPane renderPatch(Patch patch, double size) {
-        StackPane patchImage = new StackPane();
-        patchImage.setAlignment(Pos.TOP_LEFT);
-
-        Shape baseSquare = new Rectangle(size, size);
-        baseSquare.setFill(FABRIC_B_COLOUR);
-        patchImage.getChildren().add(baseSquare);
-        patchImage.setRotate(patch.getRotation());
-
-        if (patch.getType().equals(Patch.SQUARE) && patch.getFabrics().contains("A")) {
-            baseSquare.setFill(FABRIC_A_COLOUR);
-        } else if (patch.getType().equals(Patch.HALF_SQUARE)) {
-            Shape halfSquare = new Rectangle(size / 2.0, size);
-            halfSquare.setFill(FABRIC_A_COLOUR);
-            patchImage.getChildren().add(halfSquare);
-        } else if (patch.getType().equals(Patch.HALF_TRIANGLE)) {
-            Shape halfTriangle = new Polygon(0.0, 0.0, 0.0, size, size, 0.0);
-            halfTriangle.setFill(FABRIC_A_COLOUR);
-            patchImage.getChildren().add(halfTriangle);
-        }
-        return patchImage;
-    }
-
-    private void loadQuilt() {
-        try {
-            quilt = Reader.readQuilt(new File(QUILT_FILE));
-        } catch (FileNotFoundException e) {
-            System.out.println("Sorry! You don't have a quilt saved. Why don't you start a new one?");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    // EFFECTS: saves the current quilt to file if possible
     private void saveQuilt() {
         try {
             Writer writer = new Writer(new File(QUILT_FILE));
@@ -401,129 +221,207 @@ public class QuiltAppGUI extends Application {
         }
     }
 
-    private void clearQuiltGrid() {
-        GridPane quiltGrid = (GridPane) window.getScene().lookup("#quiltGrid");
-        quiltGrid.getChildren().clear();
+    // MODIFIES: this
+    // EFFECTS: creates a button capable of loading data from file
+    private Node initializeLoadButton() {
+        Button loadButton = new Button("Load");
+        loadButton.getStyleClass().add("menu-button");
+        loadButton.setTooltip(new Tooltip("Loads your last saved quilt"));
+
+        loadButton.setOnAction(event -> {
+            loadQuilt();
+            this.quiltGrid.initializeQuiltGrid();
+            this.quiltGrid.renderQuilt();
+            this.quiltControls.updateQuiltInfoOnLoad();
+        });
+
+        return loadButton;
     }
 
-    private void renderQuilt() {
-        GridPane quiltGrid = (GridPane) window.getScene().lookup("#quiltGrid");
-        for (int i = 0; i < quilt.getTotalBlocks(); i++) {
-            Block block = quilt.getBlocks().get(i);
-            if (block != null) {
-                StackPane blockSpace = (StackPane) quiltGrid.getChildren().get(i);
-                double size = blockSpace.getPrefHeight();
-                GridPane blockImage = renderBlock(block, size);
-                blockImage.setPrefWidth(blockSpace.getPrefWidth());
-                blockImage.setPrefHeight(blockSpace.getPrefHeight());
-                blockSpace.getChildren().add(blockImage);
-                Button deleteButton = (Button) blockSpace.getChildren().get(0);
-                deleteButton.setDisable(false);
-                deleteButton.setVisible(true);
-            }
+    // MODIFIES: this
+    // EFFECTS: loads a quilt from file if a saved quilt exists; otherwise, alerts user
+    private void loadQuilt() {
+        try {
+            quilt = Reader.readQuilt(new File(QUILT_FILE));
+        } catch (FileNotFoundException e) {
+            Alert loadAlert = new Alert(Alert.AlertType.WARNING);
+            loadAlert.setContentText("You don't have a saved quilt yet");
+            loadAlert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void renderQuiltGrid() {
-        GridPane quiltGrid = (GridPane) window.getScene().lookup("#quiltGrid");
-        quiltGrid.setAlignment(Pos.CENTER);
-        int blocksAcross = quilt.getNumBlocksAcross();
-        int blocksDown = quilt.getNumBlocksDown();
-        double blockSpaceSize = Math.min(quiltGrid.getWidth() / blocksAcross, quiltGrid.getHeight() / blocksDown);
-        blockSpaceSize -= (blockSpaceSize % 3);
+    // EFFECTS: creates and returns the control pane for starting a new quilt
+    private Pane initializeNewQuiltControlSubArea() {
+        VBox quiltControlSubArea = new VBox();
+        quiltControlSubArea.getStyleClass().add("vbox");
 
-        for (int i = 0; i < blocksDown; i++) {
-            for (int j = 0; j < blocksAcross; j++) {
-                int blockSlot = j + (blocksAcross * i) + 1;
-                quiltGrid.add(makeBlockSpace(blockSpaceSize, blockSlot), j, i);
-            }
-        }
+        Label quiltControlLabel = new Label("Let's get creative! What size quilt do you want to make?");
+        quiltControlLabel.getStyleClass().add("design-label");
+
+        this.quiltControls = new NewQuiltControlsUI(this);
+        quiltControls.getStyleClass().add("new-quilt-controls");
+
+        quiltControlSubArea.getChildren().addAll(quiltControlLabel, quiltControls);
+
+        return quiltControlSubArea;
     }
 
-    private StackPane makeBlockSpace(double blockSpaceSize, int blockSlot) {
-        StackPane blockSpace = new StackPane();
+    // EFFECTS: creates and returns the control pane for changing the color of the quilt
+    private Pane initializeColorPickerSubArea() {
+        VBox colorPickerSubArea = new VBox();
+        colorPickerSubArea.getStyleClass().add("vbox");
 
-        Button deleteButton = new Button();
-        deleteButton.setGraphic(new ImageView(CANCEL));
-        deleteButton.setStyle("-fx-background-color: transparent;");
+        Label colorPickerLabel = new Label("Time to color your world.");
+        colorPickerLabel.getStyleClass().add("design-label");
 
-        blockSpace.getChildren().add(deleteButton);
-        StackPane.setAlignment(deleteButton, Pos.TOP_RIGHT);
-        deleteButton.setVisible(false);
-        deleteButton.setDisable(true);
+        Pane colorPickers = initializeColorPickers();
 
-        blockSpace.setOnMouseEntered(event -> deleteButton.toFront());
+        colorPickerSubArea.getChildren().addAll(colorPickerLabel, colorPickers);
 
-        blockSpace.setOnMouseExited(event -> deleteButton.toBack());
+        return colorPickerSubArea;
+    }
 
-        deleteButton.setOnAction(event -> {
-            quilt.removeBlock(blockSlot - 1);
-            clearQuiltGrid();
-            renderQuiltGrid();
-            renderQuilt();
-        });
+    // MODIFIES: this
+    // EFFECTS: creates a returns color pickers capable of changing the color of the quilt
+    private Pane initializeColorPickers() {
+        HBox colorPickerBox = new HBox(20);
+        Tooltip tooltip = new Tooltip("Choose colours for your quilt");
+        Tooltip.install(colorPickerBox, tooltip);
 
-        Label blockSpaceLabel = new Label(Integer.toString(blockSlot));
-        blockSpace.getChildren().add(blockSpaceLabel);
-        blockSpace.setStyle("-fx-border-color: grey");
-        blockSpace.setPrefSize(blockSpaceSize, blockSpaceSize);
-        blockSpace.setMaxSize(blockSpaceSize, blockSpaceSize);
-        blockSpace.setMinSize(blockSpaceSize, blockSpaceSize);
+        Label fabricALabel = new Label("Fabric A");
+        Label fabricBLabel = new Label("Fabric B");
+        ColorPicker colorPickerA = new ColorPicker();
+        ColorPicker colorPickerB = new ColorPicker();
 
-        blockSpace.setOnDragOver(event -> {
-            /* data is dragged over the target */
-            /* accept it only if it is not dragged from the same node
-             * and if it has a string data */
-            if (event.getGestureSource() != blockSpace && event.getDragboard().hasString()) {
-                /* allow for both copying and moving, whatever user chooses */
-                event.acceptTransferModes(TransferMode.COPY);
+        colorPickerBox.getChildren().addAll(fabricALabel, colorPickerA, fabricBLabel, colorPickerB);
+
+        colorPickerA.setOnAction(event -> {
+            if (quilt != null) {
+                FABRIC_A_COLOUR = colorPickerA.getValue();
+                quiltGrid.renderQuilt();
             }
-            event.consume();
         });
 
-        blockSpace.setOnDragEntered(event -> {
-            /* the drag-and-drop gesture entered the target */
-            /* show to the user that it is an actual gesture target */
-            if (event.getGestureSource() != blockSpace && event.getDragboard().hasString()) {
-                blockSpaceLabel.setTextFill(Color.GREEN);
+        colorPickerB.setOnAction(event -> {
+            if (quilt != null) {
+                FABRIC_B_COLOUR = colorPickerB.getValue();
+                quiltGrid.renderQuilt();
             }
-            event.consume();
         });
 
-        blockSpace.setOnDragExited(event -> {
-            /* the drag-and-drop gesture entered the target */
-            /* show to the user that it is an actual gesture target */
-            blockSpaceLabel.setTextFill(Color.BLACK);
-            event.consume();
-        });
+        return colorPickerBox;
+    }
 
-        blockSpace.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                try {
-                    quilt.addBlock(db.getString(), blockSlot - 1);
-                    renderQuilt();
-                } catch (BlockUnavailableException e) {
+    // EFFECTS: creates and returns a pane where users can calculate how much fabric is needed
+    private Pane initializeCalculationSubArea() {
+        VBox calculationSubArea = new VBox();
+        calculationSubArea.getStyleClass().add("vbox");
+
+        Label calculationLabel = new Label("Quilt math sucks. Let someone else do it for you.");
+        calculationLabel.getStyleClass().add("design-label");
+
+        Pane calculationDisplay = initializeCalculationDisplay();
+
+        calculationSubArea.getChildren().addAll(calculationLabel, calculationDisplay);
+
+        return calculationSubArea;
+    }
+
+    // EFFECTS: creates and returns a pane where users can see how much fabric they need
+    private Pane initializeCalculationDisplay() {
+        VBox calculationDisplayArea = new VBox();
+        calculationDisplayArea.getStyleClass().add("vbox");
+
+        Button calculateButton = new Button("Calculate");
+        TextArea calculateAnswer = new TextArea();
+        calculateAnswer.setEditable(false);
+
+        calculateButton.setOnAction(event -> calculateAnswer.setText(getFabricCalculations()));
+
+        calculationDisplayArea.getChildren().addAll(calculateAnswer, calculateButton);
+
+        return calculationDisplayArea;
+    }
+
+    // EFFECTS: returns a string detailing how much fabric is needed
+    private String getFabricCalculations() {
+        String answer = "";
+        if (quilt != null) {
+            double fabricAmountA = quilt.calculateFabric("A");
+            double fabricAmountB = quilt.calculateFabric("B");
+            double fabricAmountBacking = quilt.calculateTotalBacking();
+            double fabricAmountBinding = quilt.calculateTotalBinding();
+            answer += ("FABRIC NEEDED: \n"
+                    + "You need " + fabricAmountA + " square inches of fabric A,\n"
+                    + "       and " + fabricAmountB + " square inches of fabric B,\n"
+                    + "       and " + fabricAmountBacking + " square inches of backing fabric,\n"
+                    + "       and " + fabricAmountBinding + " square inches of binding fabric.\n"
+                    + "\nPATCHES NEEDED: \n"
+                    + "You need " + quilt.countPatches(Patch.SQUARE) + " square patches,\n"
+                    + "       and " + quilt.countPatches(Patch.HALF_SQUARE) + " half-square patches,\n"
+                    + "       and " + quilt.countPatches(Patch.HALF_TRIANGLE) + " half-square triangle patches.");
+        } else {
+            answer = "You need to create or load a quilt first!";
+        }
+        return answer;
+    }
+
+    // EFFECTS: creates and returns a pane where users can choose blocks for their quilt
+    private Pane initializeBlockChooserSubArea() {
+        VBox blockChooserSubArea = new VBox();
+        blockChooserSubArea.getStyleClass().add("vbox");
+
+        Label blockChooserLabel = new Label("Choose your favourite. Add a block to your quilt.");
+        blockChooserLabel.getStyleClass().add("design-label");
+
+        ScrollPane blockScroller = initializeBlockScroller();
+
+        blockChooserSubArea.getChildren().addAll(blockChooserLabel, blockScroller);
+
+        return blockChooserSubArea;
+    }
+
+    // EFFECTS: creates and returns a scroll bar with available blocks
+    private ScrollPane initializeBlockScroller() {
+        ScrollPane blockScroller = new ScrollPane();
+        Tooltip tooltip = new Tooltip("Drag and drop blocks to design your quilt");
+        Tooltip.install(blockScroller, tooltip);
+
+        int height = WINDOW_HEIGHT / 5;
+        blockScroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        blockScroller.setPrefHeight(height);
+
+        HBox blockImages = renderAvailableBlocks(height * 0.72);
+        blockScroller.setContent(blockImages);
+
+        return blockScroller;
+    }
+
+    // EFFECTS: creates horizontal pane of available blocks that can be dragged
+    // NOTE: code for .setOnDragDetected method copied from Oracle Drag and Drop Tutorial
+    //      available from https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
+    private HBox renderAvailableBlocks(double height) {
+        HBox blockImages = new HBox();
+        blockImages.getStyleClass().add("block-images");
+        for (String blockName : BlockType.getAvailableBlockMap().keySet()) {
+            try {
+                Block block = new Block(blockName, 0);
+                BlockImage blockImage = new BlockImage(block, height);
+                blockImage.setOnDragDetected(event -> {
+                    Dragboard db = blockImage.startDragAndDrop(TransferMode.ANY);
+                    db.setDragView(blockImage.snapshot(null, null));
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(block.getBlockType());
+                    db.setContent(content);
                     event.consume();
-                }
-                success = true;
+                });
+                blockImages.getChildren().add(blockImage);
+            } catch (BlockUnavailableException e) {
+                continue;
             }
-            /* let the source know whether the string was successfully
-             * transferred and used */
-            event.setDropCompleted(success);
-            event.consume();
-        });
-
-
-        return blockSpace;
-    }
-
-    private void closeProgram() {
-        boolean answer = ConfirmBox.display("Exit", "Do you want to save your quilt before exiting?");
-        if (answer) {
-            saveQuilt();
         }
-        window.close();
+        return blockImages;
     }
 }

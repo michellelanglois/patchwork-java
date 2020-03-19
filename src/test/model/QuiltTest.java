@@ -21,6 +21,7 @@ class QuiltTest {
     public void testConstructor() {
         assertEquals(20, testQuilt.getNumBlocksAcross() * testQuilt.getNumBlocksDown());
         assertEquals(20, testQuilt.getBlocks().size());
+        assertEquals(6.0, testQuilt.getBlockSize());
         for (Block b: testQuilt.getBlocks()) {
             assertNull(b);
         }

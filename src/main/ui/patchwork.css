@@ -1,28 +1,86 @@
 .root{
     -fx-font-size: 11pt;
-    -fx-font-family: "Avenir-Light";
-}
-
-.button-menu{
-    -fx-font-size: 15pt;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-padding: 5;
+    -fx-font-family: "Avenir";
+    -fx-background-color: #f9f8fa;
+    -fx-focus-color: #0fa3b1;
+    -fx-text-fill: #3c393f;
 }
 
 .button{
     -fx-border-radius: 5;
     -fx-background-radius: 5;
-    -fx-padding: 5;
+    -fx-padding: 10;
 }
 
-.header{
+.menu{
+    -fx-padding: 10;
     -fx-font-size: 30pt;
-    -fx-font-family: "Avenir-Medium";
-    -fx-background-color: #FCCD04;
+    -fx-font-weight: bold;
+    -fx-background-color: #cbc0d3;
 }
 
-.label-subheader{
+.menu-title{
+    -fx-spacing: 30;
+    -fx-alignment: "center-left";
+}
+
+.menu-controls{
+    -fx-spacing: 10;
+    -fx-alignment: "center-right";
+}
+
+.menu-button{
     -fx-font-size: 15pt;
-    -fx-font-family: "Avenir-Medium";
+    -fx-background-color: #cbc0d3;
+    -fx-border-color: #8e9aaf;
+}
+
+.menu-button:hover{
+    -fx-background-color: #8e9aaf;
+    -fx-text-fill: #dee2ff;
+}
+
+.design{
+    -fx-padding: 30;
+    -fx-spacing: 30;
+}
+
+.design-label{
+    -fx-font-size: 15pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: #a693b4;
+}
+
+.vbox{
+    -fx-spacing: 10;
+}
+
+.new-quilt-controls{
+    -fx-hgap: 8;
+    -fx-vgap: 10;
+}
+
+.quilt-size-label{
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
+    -fx-text-alignment: "center";
+}
+
+.block-space{
+    -fx-border-color: #afb8c7;
+    -fx-font-size: 15pt;
+}
+
+.block-images{
+    -fx-padding: 15;
+    -fx-spacing: 15;
+}
+
+.color-picker {
+    -fx-background-color: #cbc0d3;
+    -fx-background-radius: 0 15 15 0;
+    -fx-font-size: 9pt;
+}
+.color-picker .color-picker-label .text {
+
 }

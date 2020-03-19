@@ -1,6 +1,5 @@
 package model;
 
-import javafx.scene.paint.Color;
 import model.blocks.Block;
 import persistence.GsonConfigured;
 import persistence.Saveable;
@@ -75,6 +74,10 @@ public class Quilt implements Saveable {
 
     public double getLength() {
         return numBlocksDown * blockSize;
+    }
+
+    public double getBlockSize() {
+        return blockSize;
     }
 
     public List<Block> getBlocks() {
