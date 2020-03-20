@@ -23,7 +23,7 @@ public class BlockSpace extends StackPane {
 
     // MODIFIES: this
     // EFFECTS: creates a block space with specific index link to quilt blocks list and methods to add and remove blocks
-    protected BlockSpace(QuiltGridUI quiltGridUI, double blockSpaceSize, int blockIndex) {
+    public BlockSpace(QuiltGridUI quiltGridUI, double blockSpaceSize, int blockIndex) {
         this.quiltGridUI = quiltGridUI;
         this.blockSpaceSize = blockSpaceSize;
         this.blockIndex = blockIndex;
@@ -99,7 +99,7 @@ public class BlockSpace extends StackPane {
 
         this.setOnDragEntered(event -> {
             if (event.getGestureSource() != this && event.getDragboard().hasString()) {
-                this.setStyle("-fx-border-color: #0fa3b1;");
+                this.setStyle("-fx-border-color: #d197fc;");
             }
             event.consume();
         });
@@ -132,7 +132,7 @@ public class BlockSpace extends StackPane {
     }
 
     // EFFECTS: resets block space to initial state, without any quilt block images
-    protected void resetBlockSpace() {
+    public void resetBlockSpace() {
         this.getChildren().clear();
         this.makeBlockSpace();
         disableDeleteButton();
@@ -140,7 +140,7 @@ public class BlockSpace extends StackPane {
 
     // MODIFIES: this
     // EFFECTS: adds image of given block to block space and enables delete button so block can be removed
-    protected void paintBlockSpace(Block block) {
+    public void paintBlockSpace(Block block) {
         if (block != null) {
             if (this.getChildren().size() > 2) {
                 resetBlockSpace();

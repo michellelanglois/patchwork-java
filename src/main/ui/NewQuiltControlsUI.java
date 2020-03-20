@@ -28,7 +28,7 @@ public class NewQuiltControlsUI extends GridPane {
     Label blocksSizeLabel;
 
     // EFFECTS: creates a new quilt control pane with component parts and associated event listeners
-    protected NewQuiltControlsUI(QuiltAppGUI quiltAppGUI) {
+    public NewQuiltControlsUI(QuiltAppGUI quiltAppGUI) {
         this.quiltAppGUI = quiltAppGUI;
         this.blocksAcross = initializeIntSpinner();
         this.blocksDown = initializeIntSpinner();
@@ -160,7 +160,7 @@ public class NewQuiltControlsUI extends GridPane {
 
     // MODIFIES: this
     // EFFECTS: updates information displayed in controls based on loaded quilt
-    protected void updateQuiltInfoOnLoad() {
+    public void updateQuiltInfoOnLoad() {
         Quilt quilt = quiltAppGUI.getQuilt();
         this.blocksAcross.getValueFactory().setValue(quilt.getNumBlocksAcross());
         this.blocksDown.getValueFactory().setValue(quilt.getNumBlocksDown());

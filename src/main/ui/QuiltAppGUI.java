@@ -1,7 +1,6 @@
 //TODO: function to add blocks to multiple spots on the quilt
 //TODO: ability to change size of quilt after creating
 //TODO: ability to save color of quilt
-//TODO: move CSS file into data?
 
 package ui;
 
@@ -45,7 +44,7 @@ public class QuiltAppGUI extends Application {
     private static final int WINDOW_HEIGHT = WINDOW_WIDTH * 2 / 3;
 
     private static final Image PATCHWORK_LOGO = new Image("file:./data/icons/quilt.png");
-    protected static final Image DELETE_ICON = new Image("file:./data/icons/trash.png");
+    protected static final Image DELETE_ICON = new Image("file:./data/icons/delete.png");
 
     private Quilt quilt;
     private Stage window;
@@ -58,15 +57,15 @@ public class QuiltAppGUI extends Application {
     }
 
     // getters and setters
-    protected void setQuilt(Quilt quilt) {
+    public void setQuilt(Quilt quilt) {
         this.quilt = quilt;
     }
 
-    protected Quilt getQuilt() {
+    public Quilt getQuilt() {
         return this.quilt;
     }
 
-    protected QuiltGridUI getQuiltGrid() {
+    public QuiltGridUI getQuiltGrid() {
         return quiltGrid;
     }
 
@@ -292,8 +291,8 @@ public class QuiltAppGUI extends Application {
 
         Label fabricALabel = new Label("Fabric A");
         Label fabricBLabel = new Label("Fabric B");
-        ColorPicker colorPickerA = new ColorPicker();
-        ColorPicker colorPickerB = new ColorPicker();
+        ColorPicker colorPickerA = new ColorPicker(FABRIC_A_COLOUR);
+        ColorPicker colorPickerB = new ColorPicker(FABRIC_B_COLOUR);
 
         colorPickerBox.getChildren().addAll(fabricALabel, colorPickerA, fabricBLabel, colorPickerB);
 
@@ -337,6 +336,7 @@ public class QuiltAppGUI extends Application {
         Button calculateButton = new Button("Calculate");
         TextArea calculateAnswer = new TextArea();
         calculateAnswer.setEditable(false);
+        calculateAnswer.setWrapText(true);
 
         calculateButton.setOnAction(event -> calculateAnswer.setText(getFabricCalculations()));
 
@@ -354,14 +354,14 @@ public class QuiltAppGUI extends Application {
             double fabricAmountBacking = quilt.calculateTotalBacking();
             double fabricAmountBinding = quilt.calculateTotalBinding();
             answer += ("FABRIC NEEDED: \n"
-                    + "You need " + fabricAmountA + " square inches of fabric A,\n"
-                    + "       and " + fabricAmountB + " square inches of fabric B,\n"
-                    + "       and " + fabricAmountBacking + " square inches of backing fabric,\n"
-                    + "       and " + fabricAmountBinding + " square inches of binding fabric.\n"
+                    + "You need " + fabricAmountA + " square inches of fabric A, \nand "
+                    + fabricAmountB + " square inches of fabric B.\n"
+                    + "You need " + fabricAmountBacking + " square inches of backing fabric, \n"
+                    + "and " + fabricAmountBinding + " square inches of binding fabric.\n"
                     + "\nPATCHES NEEDED: \n"
-                    + "You need " + quilt.countPatches(Patch.SQUARE) + " square patches,\n"
-                    + "       and " + quilt.countPatches(Patch.HALF_SQUARE) + " half-square patches,\n"
-                    + "       and " + quilt.countPatches(Patch.HALF_TRIANGLE) + " half-square triangle patches.");
+                    + "You need " + quilt.countPatches(Patch.SQUARE) + " square patches, "
+                    + quilt.countPatches(Patch.HALF_SQUARE) + " half-square patches, and "
+                    + quilt.countPatches(Patch.HALF_TRIANGLE) + " half-square triangle patches.");
         } else {
             answer = "You need to create or load a quilt first!";
         }

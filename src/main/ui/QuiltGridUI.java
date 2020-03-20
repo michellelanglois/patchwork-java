@@ -20,7 +20,7 @@ public class QuiltGridUI extends GridPane {
     Quilt quilt;
 
     // EFFECTS: creates an empty QuiltGridUI pane
-    protected QuiltGridUI(QuiltAppGUI quiltAppGUI) {
+    public QuiltGridUI(QuiltAppGUI quiltAppGUI) {
         this.quiltAppGUI = quiltAppGUI;
         this.blockSpaces = new ArrayList<>();
         this.quilt = null;
@@ -28,14 +28,14 @@ public class QuiltGridUI extends GridPane {
 
     // MODIFIES: this
     // EFFECTS: resets the QuiltGridUI to initial state, ready for a new quilt
-    protected void clearQuiltGrid() {
+    public void clearQuiltGrid() {
         this.getChildren().clear();
         blockSpaces.clear();
     }
 
     // MODIFIES: this
     // EFFECTS: initializes a new quilt grid of block spaces of appropriate size for current quilt
-    protected void initializeQuiltGrid() {
+    public void initializeQuiltGrid() {
         quilt = quiltAppGUI.getQuilt();
         int blocksAcross = quilt.getNumBlocksAcross();
         int blocksDown = quilt.getNumBlocksDown();
@@ -72,7 +72,7 @@ public class QuiltGridUI extends GridPane {
 
     // MODIFIES: this
     // EFFECTS: renders an image of the block at given index on the appropriate block space
-    private void renderBlock(int blockIndex) {
+    public void renderBlock(int blockIndex) {
         BlockSpace blockSpace = blockSpaces.get(blockIndex);
         blockSpace.paintBlockSpace(quilt.getBlocks().get(blockIndex));
     }

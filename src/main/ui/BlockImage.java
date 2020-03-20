@@ -21,7 +21,7 @@ public class BlockImage extends GridPane {
     double size;
 
     // EFFECTS: creates a quilt block image of given side length (in pixels) as a grid pane
-    protected BlockImage(Block block, double size) {
+    public BlockImage(Block block, double size) {
         this.block = block;
         this.size = size;
         renderBlock();

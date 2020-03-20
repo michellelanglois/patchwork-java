@@ -22,10 +22,10 @@ As a new quilter who wanted to throw pre-made patterns to the wind and design my
 - As a developer, I want to be able to easily add pre-programmed blocks to Patchwork so they are available to users.
 
 ## Instructions for TAs:
-If you'd like, you can create a new quilt by using the spinners located in the top left of the application window, and clicking on Create button. After doing this:
+If you'd like, you can create a new quilt by using the spinners located in the top left of the application window, and clicking the Create button. (If you'd prefer, you can just load the existing quilt using the instructions in the fifth bullet point below.) After doing this:
 - You can generate the first required event by clicking on any quilt block in the scroll pane and dragging it onto a block space in the quilt grid. This adds a block to the quilt. (You can drag and drop another block on top of an existing block if you want to replace it.)
 - You can generate the second required event by clicking on the trash can icon in the top right corner of any block you've added to the quilt grid. This will remove the block from the quilt.
-- You can locate my visual component by creating a new quilt or loading a saved quilt. The rendered quilt image is my visual component.
+- You can locate my visual component by creating a new quilt or loading a saved quilt. The rendered quilt image is my visual component. Also, I have added icons to the title bar and there is a trashcan icon that signals you can delete a block.
 - You can save the state of my application by clicking on the Save button in the top right of the application window. Also, if a quilt is created or loaded, and you try to exit the application, you will be prompted to save your quilt before exiting.
 - You can reload the state of my application by clicking on the Load button in the top right of the application window.
 
@@ -35,6 +35,7 @@ Additionally, you can interact with the program in the following ways:
 
 ## Credits for icons:
 - Patchwork icon credit: icon made by <a href="https://www.flaticon.com/authors/becris" title="Becris">Becris</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+- Trashcan icon credit: icon made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
 ## Future features
 In future iterations of Patchwork I hope to:

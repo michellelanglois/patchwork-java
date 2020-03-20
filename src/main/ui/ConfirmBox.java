@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 /*
 Creates a confirmation box to prompt user to save quilt on exiting the program
 
-NOTE: code copied from online YouTube tutorial from thenewboston
+NOTE: code adapted from online YouTube tutorial from thenewboston
       https://www.youtube.com/channel/UCJbPGzawDH1njbqV-D5HqKw
  */
 

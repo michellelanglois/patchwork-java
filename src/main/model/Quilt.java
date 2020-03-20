@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.paint.Color;
 import model.blocks.Block;
 import persistence.GsonConfigured;
 import persistence.Saveable;
