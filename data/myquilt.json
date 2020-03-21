@@ -4,7 +4,7 @@
   "blockSize": 12.0,
   "blocks": [
     {
-      "blockType": "plain square",
+      "blockType": "friendship star",
       "finishedSize": 12.0,
       "patches": [
         {
@@ -13,8 +13,38 @@
           "finishedSideLength": 4.0,
           "rotation": 0,
           "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 4.0,
+          "rotation": 270,
+          "fabrics": [
             "A",
-            null
+            "B"
+          ]
+        },
+        {
+          "gsonType": "a",
+          "type": "Square",
+          "finishedSideLength": 4.0,
+          "rotation": 0,
+          "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 4.0,
+          "rotation": 180,
+          "fabrics": [
+            "A",
+            "B"
           ]
         },
         {
@@ -28,13 +58,13 @@
           ]
         },
         {
-          "gsonType": "a",
-          "type": "Square",
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
           "finishedSideLength": 4.0,
           "rotation": 0,
           "fabrics": [
             "A",
-            null
+            "B"
           ]
         },
         {
@@ -43,8 +73,18 @@
           "finishedSideLength": 4.0,
           "rotation": 0,
           "fabrics": [
+            null,
+            "B"
+          ]
+        },
+        {
+          "gsonType": "c",
+          "type": "HalfSquareTriangle",
+          "finishedSideLength": 4.0,
+          "rotation": 90,
+          "fabrics": [
             "A",
-            null
+            "B"
           ]
         },
         {
@@ -53,48 +93,8 @@
           "finishedSideLength": 4.0,
           "rotation": 0,
           "fabrics": [
-            "A",
-            null
-          ]
-        },
-        {
-          "gsonType": "a",
-          "type": "Square",
-          "finishedSideLength": 4.0,
-          "rotation": 0,
-          "fabrics": [
-            "A",
-            null
-          ]
-        },
-        {
-          "gsonType": "a",
-          "type": "Square",
-          "finishedSideLength": 4.0,
-          "rotation": 0,
-          "fabrics": [
-            "A",
-            null
-          ]
-        },
-        {
-          "gsonType": "a",
-          "type": "Square",
-          "finishedSideLength": 4.0,
-          "rotation": 0,
-          "fabrics": [
-            "A",
-            null
-          ]
-        },
-        {
-          "gsonType": "a",
-          "type": "Square",
-          "finishedSideLength": 4.0,
-          "rotation": 0,
-          "fabrics": [
-            "A",
-            null
+            null,
+            "B"
           ]
         }
       ]

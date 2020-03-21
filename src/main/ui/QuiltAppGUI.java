@@ -159,7 +159,7 @@ public class QuiltAppGUI extends Application {
     // EFFECTS: creates and returns the quilt visualization pane for the application
     private StackPane initializeQuiltArea() {
         StackPane quiltArea = new StackPane();
-        quiltArea.setPadding(new Insets(10, 10, 10, 10));
+        quiltArea.setPadding(new Insets(30, 30, 30, 30));
         quiltGrid = new QuiltGridUI(this);
 
         quiltArea.getChildren().add(quiltGrid);
@@ -393,7 +393,7 @@ public class QuiltAppGUI extends Application {
         blockScroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         blockScroller.setPrefHeight(height);
 
-        HBox blockImages = renderAvailableBlocks(height * 0.72);
+        HBox blockImages = renderAvailableBlocks((height * .70) - (height * .70 % 3));
         blockScroller.setContent(blockImages);
 
         return blockScroller;
@@ -419,7 +419,7 @@ public class QuiltAppGUI extends Application {
                 });
                 blockImages.getChildren().add(blockImage);
             } catch (BlockUnavailableException e) {
-                continue;
+                e.printStackTrace();
             }
         }
         return blockImages;

@@ -21,18 +21,6 @@ As a new quilter who wanted to throw pre-made patterns to the wind and design my
 - As a user, I want to be able to optionally load my quilt from file when the program starts.
 - As a developer, I want to be able to easily add pre-programmed blocks to Patchwork so they are available to users.
 
-## Instructions for TAs:
-If you'd like, you can create a new quilt by using the spinners located in the top left of the application window, and clicking the Create button. (If you'd prefer, you can just load the existing quilt using the instructions in the fifth bullet point below.) After doing this:
-- You can generate the first required event by clicking on any quilt block in the scroll pane and dragging it onto a block space in the quilt grid. This adds a block to the quilt. (You can drag and drop another block on top of an existing block if you want to replace it.)
-- You can generate the second required event by clicking on the trash can icon in the top right corner of any block you've added to the quilt grid. This will remove the block from the quilt.
-- You can locate my visual component by creating a new quilt or loading a saved quilt. The rendered quilt image is my visual component. Also, I have added icons to the title bar and there is a trashcan icon that signals you can delete a block.
-- You can save the state of my application by clicking on the Save button in the top right of the application window. Also, if a quilt is created or loaded, and you try to exit the application, you will be prompted to save your quilt before exiting.
-- You can reload the state of my application by clicking on the Load button in the top right of the application window.
-
-Additionally, you can interact with the program in the following ways:
-- You can choose colors for the quilt by using the color pickers.
-- You can calculate how much fabric and how many patches are needed for the quilt by clicking on the Calculate button in the bottom left of the application window.
-
 ## Credits for icons:
 - Patchwork icon credit: icon made by <a href="https://www.flaticon.com/authors/becris" title="Becris">Becris</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 - Trashcan icon credit: icon made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
@@ -44,3 +32,15 @@ In future iterations of Patchwork I hope to:
 - Add blocks with different number of patches (4-patch, 16-patch).
 - Add the option of resizing the quilt by changing the block size and/or adding or removing rows or columns of blocks.
 - Add an option to calculate how many fat quarters or yards of standard-width fabric are needed to cover the quilt's fabric requirements.
+
+## Instructions for TAs:
+If you'd like, you can create a new quilt by using the spinners located in the top left of the application window, and clicking the Create button. (If you'd prefer, you can just load the existing quilt using the instructions in the fifth bullet point below.) After doing this:
+- You can generate the first required event by clicking on any quilt block in the scroll pane and dragging it onto a block space in the quilt grid. This adds a block to the quilt. (You can drag and drop another block on top of an existing block if you want to replace it.)
+- You can generate the second required event by clicking on the trash can icon in the top right corner of any block you've added to the quilt grid. This will remove the block from the quilt.
+- You can locate my visual component by creating a new quilt or loading a saved quilt. The rendered quilt image is my visual component. You can change the color of the quilt using the color pickers. Other visual components are: I added an icon to the title bar and I used a trashcan icon to signal that you can delete a block.
+- You can save the state of my application by clicking on the Save button in the top right of the application window. Also, if a quilt is created or loaded, and you try to exit the application, you will be prompted to save your quilt before exiting.
+- You can reload the state of my application by clicking on the Load button in the top right of the application window.
+
+Additionally, you can interact with the program in the following ways:
+- You can choose colors for the quilt by using the color pickers.
+- You can calculate how much fabric and how many patches are needed for the quilt by clicking on the Calculate button in the bottom left of the application window.

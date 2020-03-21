@@ -33,7 +33,7 @@ public class BlockSpace extends StackPane {
 
     // MODIFIES: this
     // EFFECTS: creates a block space with all associated event handlers
-    private void makeBlockSpace() {
+    protected void makeBlockSpace() {
         setBlockSpaceLayout();
         setBlockSpacePreDropEventHandlers();
         setBlockSpaceDropEventHandler();
@@ -41,7 +41,7 @@ public class BlockSpace extends StackPane {
 
     // MODIFIES: this
     // EFFECTS: creates a block space with a label and delete button
-    private void setBlockSpaceLayout() {
+    protected void setBlockSpaceLayout() {
         this.getStyleClass().add("block-space");
 
         this.setPrefSize(blockSpaceSize, blockSpaceSize);
@@ -57,7 +57,7 @@ public class BlockSpace extends StackPane {
 
     // MODIFIES: this
     // EFFECTS: creates a delete button visible only on hover, button invisible & disabled when initialized
-    private Button initializeDeleteButton() {
+    protected Button initializeDeleteButton() {
         deleteButton = new Button();
         deleteButton.setGraphic(new ImageView(QuiltAppGUI.DELETE_ICON));
         deleteButton.setStyle("-fx-background-color: transparent;");
@@ -73,14 +73,14 @@ public class BlockSpace extends StackPane {
 
     // MODIFIES: this
     // EFFECTS: disables delete button (so it cannot be used when a quilt block is not present in block space)
-    private void disableDeleteButton() {
+    protected void disableDeleteButton() {
         deleteButton.setVisible(false);
         deleteButton.setDisable(true);
     }
 
     // MODIFIES: this
     // EFFECTS: enables the delete button so it can be used when a quilt block is present in the block space
-    private void enableDeleteButton() {
+    protected void enableDeleteButton() {
         deleteButton.setVisible(true);
         deleteButton.setDisable(false);
     }
@@ -89,7 +89,7 @@ public class BlockSpace extends StackPane {
     // EFFECTS: sets ability for block space to accept a dragged quilt block and add to the visualization
     // NOTE: code for .setOnDrag* methods copied from Oracle Drag and Drop Tutorial
     //       available from https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
-    private void setBlockSpacePreDropEventHandlers() {
+    protected void setBlockSpacePreDropEventHandlers() {
         this.setOnDragOver(event -> {
             if (event.getGestureSource() != this && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.COPY);
@@ -114,7 +114,7 @@ public class BlockSpace extends StackPane {
     // EFFECTS: sets ability for block space to accept a dragged quilt block and add to the visualization
     // NOTE: code for .setOnDrag* methods copied from Oracle Drag and Drop Tutorial
     //       available from https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
-    private void setBlockSpaceDropEventHandler() {
+    protected void setBlockSpaceDropEventHandler() {
         this.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;

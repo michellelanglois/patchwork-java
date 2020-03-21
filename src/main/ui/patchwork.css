@@ -9,7 +9,7 @@
 .button{
     -fx-border-radius: 5;
     -fx-background-radius: 5;
-    -fx-padding: 10;
+    -fx-padding: 8;
 }
 
 .menu{
