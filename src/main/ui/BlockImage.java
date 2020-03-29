@@ -9,7 +9,10 @@ import javafx.scene.shape.Shape;
 import java.util.List;
 
 import model.blocks.Block;
+import model.patches.HalfSquare;
+import model.patches.HalfSquareTriangle;
 import model.patches.Patch;
+import model.patches.Square;
 
 /*
 Represents the image of a quilt block
@@ -50,13 +53,13 @@ public class BlockImage extends GridPane {
         patchImage.getChildren().add(baseSquare);
         patchImage.setRotate(patch.getRotation());
 
-        if (patch.getType().equals(Patch.SQUARE) && patch.getFabrics().contains("A")) {
+        if (patch instanceof Square && patch.getFabrics().contains("A")) {
             baseSquare.setFill(QuiltAppGUI.FABRIC_A_COLOUR);
-        } else if (patch.getType().equals(Patch.HALF_SQUARE)) {
+        } else if (patch instanceof HalfSquare) {
             Shape halfSquare = new Rectangle(size / 2.0, size);
             halfSquare.setFill(QuiltAppGUI.FABRIC_A_COLOUR);
             patchImage.getChildren().add(halfSquare);
-        } else if (patch.getType().equals(Patch.HALF_TRIANGLE)) {
+        } else if (patch instanceof HalfSquareTriangle) {
             Shape halfTriangle = new Polygon(0.0, 0.0, 0.0, size, size, 0.0);
             halfTriangle.setFill(QuiltAppGUI.FABRIC_A_COLOUR);
             patchImage.getChildren().add(halfTriangle);

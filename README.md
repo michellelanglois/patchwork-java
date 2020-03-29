@@ -33,7 +33,7 @@ In future iterations of Patchwork I hope to:
 - Add the option of resizing the quilt by changing the block size and/or adding or removing rows or columns of blocks.
 - Add an option to calculate how many fat quarters or yards of standard-width fabric are needed to cover the quilt's fabric requirements.
 
-## Instructions for TAs:
+## Instructions for TAs
 If you'd like, you can create a new quilt by using the spinners located in the top left of the application window, and clicking the Create button. (If you'd prefer, you can just load the existing quilt using the instructions in the fifth bullet point below.) After doing this:
 - You can generate the first required event by clicking on any quilt block in the scroll pane and dragging it onto a block space in the quilt grid. This adds a block to the quilt. (You can drag and drop another block on top of an existing block if you want to replace it.)
 - You can generate the second required event by clicking on the trash can icon in the top right corner of any block you've added to the quilt grid. This will remove the block from the quilt.
@@ -44,3 +44,7 @@ If you'd like, you can create a new quilt by using the spinners located in the t
 Additionally, you can interact with the program in the following ways:
 - You can choose colors for the quilt by using the color pickers.
 - You can calculate how much fabric and how many patches are needed for the quilt by clicking on the Calculate button in the bottom left of the application window.
+
+## Phase 4: Task 2
+- I implemented a type hierarchy. I have an abstract class, Patch, and three subclasses: HalfSquareTriangle, HalfSquare, and Square. The three subclasses override two methods from Patch: calculateFabric() and getType(). (Note: calculateFabric() is called from Patch's calculateFabric(String fabric) method, and provides a different calculation of how much fabric is needed for each patch type.)
+- I also made Quilt a robust method. The quilt constructor now throws an IllegalQuiltSizeException if passed parameters that are < 0 for numBlocksAcross, numBlocksDown, or blockSize. Additionally, addBlock(String blockType, int slot) and removeBlock(int slot) both throw a SlotOutOfBoundsException if given a slot that is < 0 or >= total number of blocks in the quilt. The exceptions are handled in my GUI. I added tests for these exceptions in the QuiltTest class.

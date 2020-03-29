@@ -20,18 +20,24 @@ public class HalfSquare extends Patch {
     // EFFECTS: creates a half-square patch of given size (inches) & rotation (deg), with two fabrics
     public HalfSquare(double finishedSideLength, int rotation) {
         super(finishedSideLength, rotation);
-        this.type = HALF_SQUARE;
     }
 
     // EFFECTS: Creates a half-square patch; used only when deserializing patch data from JSON using GSON
     private HalfSquare() { }
 
-    // EFFECTS: calculates the total fabric (in square inches) needed to make one rectangle of the patch
+    // EFFECTS: calculates the total fabric (in square i
+    // nches) needed to make one rectangle of the patch
     @Override
-    protected double getCalculation() {
-        double heightPerRectangle = finishedSideLength + (Quilt.SEAM_ALLOWANCE * 2);
-        double widthPerRectangle = (finishedSideLength / 2) + (Quilt.SEAM_ALLOWANCE * 2);
-        return heightPerRectangle * widthPerRectangle;
+    protected double calculateFabric() {
+        double unfinishedHeightPerRectangle = finishedSideLength + (Quilt.SEAM_ALLOWANCE * 2);
+        double unfinishedWidthPerRectangle = (finishedSideLength / 2) + (Quilt.SEAM_ALLOWANCE * 2);
+        return unfinishedHeightPerRectangle * unfinishedWidthPerRectangle;
+    }
+
+    @Override
+    // EFFECTS: returns the type of the patch
+    public String getType() {
+        return Patch.HALF_SQUARE;
     }
 
 }

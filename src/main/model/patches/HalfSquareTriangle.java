@@ -20,17 +20,22 @@ public class HalfSquareTriangle extends Patch {
     // EFFECTS: creates a half-square triangle patch of given side length (inches) & rotation (deg), with two fabrics
     public HalfSquareTriangle(double finishedSideLength, int rotation) {
         super(finishedSideLength, rotation);
-        this.type = HALF_TRIANGLE;
     }
 
     // EFFECTS: Creates a half-square triangle patch; used only when deserializing patch data from JSON using GSON
     private HalfSquareTriangle() { }
 
-    // EFFECTS: calculates the total fabric (in square inches) needed to make one triangle of the patch
     @Override
-    protected double getCalculation() {
+    // EFFECTS: calculates the total fabric (in square inches) needed to make one triangle of the patch
+    protected double calculateFabric() {
         double unfinishedSideLength = finishedSideLength + (Quilt.SEAM_ALLOWANCE * 2);
         double startingSquareSideLength = unfinishedSideLength + 1;
         return startingSquareSideLength * startingSquareSideLength / 2;
+    }
+
+    @Override
+    // EFFECTS: returns the type of the patch
+    public String getType() {
+        return Patch.HALF_TRIANGLE;
     }
 }

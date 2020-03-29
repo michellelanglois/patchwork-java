@@ -14,18 +14,15 @@ public abstract class Patch {
     public static final String HALF_SQUARE = "HalfSquare";
     public static final String SQUARE = "Square";
 
-    protected String type;
     protected double finishedSideLength;
     protected int rotation;
     protected List<String> fabrics;
 
 
     // REQUIRES: rotation is 0, 90, 180, or 270 degrees
-    //           finishedSideLength is pre-determined by the block size and number of patches (passed in from block)
-    // EFFECTS: creates a patch of the given type, size (in inches), and rotation (in degrees), with up to two fabrics
-    //          patch type is filled in by subclass constructors
+    //           finishedSideLength > 0; pre-determined by the block size and number of patches (passed in from block)
+    // EFFECTS: creates a patch of the given size (in inches), and rotation (in degrees), with up to two fabrics
     protected Patch(double finishedSideLength, int rotation) {
-        this.type = null;
         this.finishedSideLength = finishedSideLength;
         this.rotation = rotation;
         this.fabrics = new ArrayList<>(2);
@@ -50,10 +47,6 @@ public abstract class Patch {
         return fabrics;
     }
 
-    public String getType() {
-        return type;
-    }
-
     // setters
     public void setFinishedSideLength(double sideLength) {
         this.finishedSideLength = sideLength;
@@ -67,13 +60,16 @@ public abstract class Patch {
     // EFFECTS: returns total fabric (in square inches) needed of given fabric to make the patch
     public double calculateFabric(String fabric) {
         if (containsFabric(fabric)) {
-            return getCalculation();
+            return calculateFabric();
         } else {
             return 0;
         }
     }
 
     // subclass-specific calculations for total fabric needed
-    protected abstract double getCalculation();
+    protected abstract double calculateFabric();
+
+    // subclass-specific type information
+    public abstract String getType();
 
 }

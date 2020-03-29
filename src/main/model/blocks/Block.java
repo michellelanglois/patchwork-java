@@ -1,5 +1,6 @@
 package model.blocks;
 
+import exceptions.IllegalQuiltSizeException;
 import model.patches.Patch;
 import persistence.Reader;
 import exceptions.BlockUnavailableException;
@@ -24,15 +25,15 @@ public class Block {
 
     // REQUIRES: finishedSize > 0
     // EFFECTS: creates a block (list of patches) of the given type and of the given finished side length (in inches)
+    //          finishedSize is predetermined by block size set in Quilt
     //          if blockType is not a known type, constructor will throw an exception
     public Block(String blockType, double finishedSize) throws BlockUnavailableException {
-        this.blockType = blockType;
-        this.finishedSize = finishedSize;
-
-        if (BlockType.isAvailableBlock(blockType)) {
-            this.patches = getPatchesFromPattern(BlockType.getBlockFileName(blockType));
-        } else {
+        if (!BlockType.isAvailableBlock(blockType)) {
             throw new BlockUnavailableException();
+        } else {
+            this.blockType = blockType;
+            this.finishedSize = finishedSize;
+            this.patches = getPatchesFromPattern(BlockType.getBlockFileName(blockType));
         }
     }
 

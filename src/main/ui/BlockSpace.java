@@ -1,6 +1,7 @@
 package ui;
 
 import exceptions.BlockUnavailableException;
+import exceptions.SlotOutOfBoundsException;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -66,7 +67,13 @@ public class BlockSpace extends StackPane {
         this.setOnMouseEntered(event -> deleteButton.toFront());
         this.setOnMouseExited(event -> deleteButton.toBack());
 
-        deleteButton.setOnAction(event -> quiltGridUI.removeBlockFromQuilt(blockIndex));
+        deleteButton.setOnAction(event -> {
+            try {
+                quiltGridUI.removeBlockFromQuilt(blockIndex);
+            } catch (SlotOutOfBoundsException e) {
+                event.consume();
+            }
+        });
 
         return deleteButton;
     }
@@ -121,7 +128,7 @@ public class BlockSpace extends StackPane {
             if (db.hasString()) {
                 try {
                     quiltGridUI.addBlockToQuilt(db.getString(), blockIndex);
-                } catch (BlockUnavailableException e) {
+                } catch (BlockUnavailableException | SlotOutOfBoundsException e) {
                     event.consume();
                 }
                 success = true;

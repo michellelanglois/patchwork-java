@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.IllegalQuiltSizeException;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -80,10 +81,15 @@ public class NewQuiltControlsUI extends GridPane {
         startNewButton.setTooltip(new Tooltip("Create a new quilt of chosen size"));
 
         startNewButton.setOnAction(event -> {
-            quiltAppGUI.setQuilt(new Quilt(blocksAcross.getValue(), blocksDown.getValue(), blockSize.getValue()));
-            quiltAppGUI.getQuiltGrid().initializeQuiltGrid();
-            quiltAppGUI.getQuiltGrid().renderQuilt();
-            disableControls();
+            try {
+                Quilt quilt = new Quilt(blocksAcross.getValue(), blocksDown.getValue(), blockSize.getValue());
+                quiltAppGUI.setQuilt(quilt);
+                quiltAppGUI.getQuiltGrid().initializeQuiltGrid();
+                quiltAppGUI.getQuiltGrid().renderQuilt();
+                disableControls();
+            } catch (IllegalQuiltSizeException e) {
+                event.consume();
+            }
         });
 
         return startNewButton;

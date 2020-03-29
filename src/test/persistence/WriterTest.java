@@ -1,6 +1,8 @@
 package persistence;
 
 import exceptions.BlockUnavailableException;
+import exceptions.IllegalQuiltSizeException;
+import exceptions.SlotOutOfBoundsException;
 import model.Quilt;
 import model.blocks.*;
 import model.patches.*;
@@ -20,7 +22,7 @@ public class WriterTest {
     private Quilt testQuilt;
 
     @BeforeEach
-    public void runBefore() throws BlockUnavailableException {
+    public void runBefore() throws BlockUnavailableException, IllegalQuiltSizeException, SlotOutOfBoundsException {
         testQuilt = new Quilt(2, 2, 4);
         testQuilt.addBlock("friendship star", 3);
         try {
@@ -50,7 +52,7 @@ public class WriterTest {
     }
 
     @Test
-    public void testWriteQuiltOldFileNoExceptionExpected() throws BlockUnavailableException{
+    public void testWriteQuiltOldFileNoExceptionExpected() throws BlockUnavailableException, SlotOutOfBoundsException {
         try {
             // add another block and try to write to the same file
             testQuilt.addBlock("checkerboard", 2);

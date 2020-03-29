@@ -1,6 +1,7 @@
 package ui;
 
 import exceptions.BlockUnavailableException;
+import exceptions.SlotOutOfBoundsException;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import model.Quilt;
@@ -58,14 +59,15 @@ public class QuiltGridUI extends GridPane {
 
     // MODIFIES: this
     // EFFECTS: adds a block to quilt and renders the block
-    public void addBlockToQuilt(String blockName, int blockIndex) throws BlockUnavailableException {
+    public void addBlockToQuilt(String blockName, int blockIndex) throws BlockUnavailableException,
+                                                                            SlotOutOfBoundsException {
         quilt.addBlock(blockName, blockIndex);
         renderBlock(blockIndex);
     }
 
     // MODIFIES: this
     // EFFECTS: removes a block from the quilt and resets the appropriate block space to initial state
-    public void removeBlockFromQuilt(int blockIndex) {
+    public void removeBlockFromQuilt(int blockIndex) throws SlotOutOfBoundsException {
         quilt.removeBlock(blockIndex);
         blockSpaces.get(blockIndex).resetBlockSpace();
     }
