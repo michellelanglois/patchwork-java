@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Quilt;
 import model.blocks.Block;
-import model.blocks.BlockType;
+import model.blocks.BlockMap;
 import model.patches.Patch;
 import persistence.Reader;
 import persistence.Writer;
@@ -405,9 +405,9 @@ public class QuiltAppGUI extends Application {
     private HBox renderAvailableBlocks(double height) {
         HBox blockImages = new HBox();
         blockImages.getStyleClass().add("block-images");
-        for (String blockName : BlockType.getAvailableBlockMap().keySet()) {
+        for (String blockName : BlockMap.listAvailableBlocks()) {
             try {
-                Block block = new Block(blockName, 0);
+                Block block = new Block(blockName);
                 BlockImage blockImage = new BlockImage(block, height);
                 blockImage.setOnDragDetected(event -> {
                     Dragboard db = blockImage.startDragAndDrop(TransferMode.ANY);

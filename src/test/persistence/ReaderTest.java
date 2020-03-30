@@ -56,7 +56,6 @@ public class ReaderTest {
             assertNull(blocks.get(0));
             Block nonEmptyBlock = blocks.get(1);
             assertEquals("greek square", nonEmptyBlock.getBlockType());
-            assertEquals(9, nonEmptyBlock.getFinishedSize());
             for (int i = 2; i < 6; i++) {
                 assertNull(blocks.get(i));
             }
@@ -64,9 +63,6 @@ public class ReaderTest {
             // test patches deserialized correctly
             List<Patch> patches = nonEmptyBlock.getPatches();
             assertEquals(9, patches.size());
-            for (Patch p : patches) {
-                assertEquals(3.0, p.getFinishedSideLength());
-            }
             assertTrue(patches.get(0) instanceof HalfSquareTriangle && patches.get(0).getRotation() == 0);
             assertTrue(patches.get(1) instanceof HalfSquare && patches.get(1).getRotation() == 270);
             assertTrue(patches.get(2) instanceof HalfSquareTriangle && patches.get(2).getRotation() == 90);
@@ -97,9 +93,6 @@ public class ReaderTest {
             ArrayList<Patch> patches = Reader.readPatchPattern(new File("./data/blockPatterns/greek-square.json"));
 
             assertEquals(9, patches.size());
-            for (Patch p : patches) {
-                assertEquals(0, p.getFinishedSideLength());
-            }
             assertTrue(patches.get(0) instanceof HalfSquareTriangle && patches.get(0).getRotation() == 0);
             assertTrue(patches.get(1) instanceof HalfSquare && patches.get(1).getRotation() == 90);
             assertTrue(patches.get(2) instanceof HalfSquareTriangle && patches.get(2).getRotation() == 90);
@@ -120,9 +113,6 @@ public class ReaderTest {
             ArrayList<Patch> patches = Reader.readPatchPattern(new File("./data/blockPatterns/friendship-star.json"));
 
             assertEquals(9, patches.size());
-            for (Patch p : patches) {
-                assertEquals(0, p.getFinishedSideLength());
-            }
             assertTrue(patches.get(0) instanceof Square && patches.get(0).containsFabric("B"));
             assertTrue(patches.get(1) instanceof HalfSquareTriangle && patches.get(1).getRotation() == 270);
             assertTrue(patches.get(2) instanceof Square && patches.get(2).containsFabric("B"));

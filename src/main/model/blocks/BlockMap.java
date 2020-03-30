@@ -1,20 +1,25 @@
 package model.blocks;
 
 /*
-Represents all blocks pre-programmed into Patchwork
+Represents a map of all blocks pre-programmed into Patchwork
  */
 
+import exceptions.BlockUnavailableException;
+import model.patches.Patch;
+import persistence.Reader;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
-public class BlockType {
+public class BlockMap {
 
     private static final String patternFileFolder = "./data/blockPatterns/";
     private static final String patternFileType = ".json";
     private static Map<String, String> blockMap = makeAvailableBlockMap();
 
     // MODIFIES: this
-    // EFFECTS: creates a map with block names as keys and block instances as values, for iteration outside the class
+    // EFFECTS: creates a map with block names as keys and block pattern file as values, for use by other classes
     //          creates map once at program start
     // NOTE: Code for the creation of the BLOCK_MAP is based on a pattern from Joshua Bloch, Effective Java
     private static Map<String, String> makeAvailableBlockMap() {
@@ -27,19 +32,25 @@ public class BlockType {
         return Collections.unmodifiableMap(map);
     }
 
+    // EFFECTS: returns the list of patches in the pattern for the given blockType
+    //          throws BlockUnavailableException if desired block doesn't exist or cannot be read from file
+    public static List<Patch> getBlockPatchPattern(String blockType) throws BlockUnavailableException {
+        try {
+            File patternFile = new File(blockMap.get(blockType));
+            return Reader.readPatchPattern(patternFile);
+        } catch (NullPointerException | IOException e) {
+            throw new BlockUnavailableException();
+        }
+    }
+
     // EFFECTS: returns block map
     public static Map<String, String> getAvailableBlockMap() {
         return blockMap;
     }
 
-    // EFFECTS: returns true if block name given is a pre-programmed block
-    public static boolean isAvailableBlock(String blockName) {
-        return getAvailableBlockMap().containsKey(blockName);
-    }
-
-    // EFFECTS: returns the file where a block pattern is stored
-    public static String getBlockFileName(String blockType) {
-        return blockMap.get(blockType);
+    // EFFECTS: returns a set of all available blocks
+    public static Set<String> listAvailableBlocks() {
+        return blockMap.keySet();
     }
 
     // EFFECTS: helper method to return a current list of file names in the block patterns folder

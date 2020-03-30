@@ -6,12 +6,9 @@
     null,
     {
       "blockType": "greek square",
-      "finishedSize": 9.0,
       "patches": [
         {
-          "gsonType": "c",
-          "type": "HalfSquareTriangle",
-          "finishedSideLength": 3.0,
+          "gsonType": "HT",
           "rotation": 0,
           "fabrics": [
             "A",
@@ -19,9 +16,7 @@
           ]
         },
         {
-          "gsonType": "b",
-          "type": "HalfSquare",
-          "finishedSideLength": 3.0,
+          "gsonType": "HS",
           "rotation": 270,
           "fabrics": [
             "A",
@@ -29,9 +24,7 @@
           ]
         },
         {
-          "gsonType": "c",
-          "type": "HalfSquareTriangle",
-          "finishedSideLength": 3.0,
+          "gsonType": "HT",
           "rotation": 90,
           "fabrics": [
             "A",
@@ -39,9 +32,7 @@
           ]
         },
         {
-          "gsonType": "b",
-          "type": "HalfSquare",
-          "finishedSideLength": 3.0,
+          "gsonType": "HS",
           "rotation": 180,
           "fabrics": [
             "A",
@@ -49,9 +40,7 @@
           ]
         },
         {
-          "gsonType": "a",
-          "type": "Square",
-          "finishedSideLength": 3.0,
+          "gsonType": "SQ",
           "rotation": 0,
           "fabrics": [
             null,
@@ -59,9 +48,7 @@
           ]
         },
         {
-          "gsonType": "b",
-          "type": "HalfSquare",
-          "finishedSideLength": 3.0,
+          "gsonType": "HS",
           "rotation": 0,
           "fabrics": [
             "A",
@@ -69,9 +56,7 @@
           ]
         },
         {
-          "gsonType": "c",
-          "type": "HalfSquareTriangle",
-          "finishedSideLength": 3.0,
+          "gsonType": "HT",
           "rotation": 270,
           "fabrics": [
             "A",
@@ -79,9 +64,7 @@
           ]
         },
         {
-          "gsonType": "b",
-          "type": "HalfSquare",
-          "finishedSideLength": 3.0,
+          "gsonType": "HS",
           "rotation": 270,
           "fabrics": [
             "A",
@@ -89,9 +72,7 @@
           ]
         },
         {
-          "gsonType": "c",
-          "type": "HalfSquareTriangle",
-          "finishedSideLength": 3.0,
+          "gsonType": "HT",
           "rotation": 180,
           "fabrics": [
             "A",

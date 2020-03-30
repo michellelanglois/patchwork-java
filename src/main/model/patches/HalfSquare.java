@@ -16,21 +16,20 @@ Half-square block fabric assignment (un-rotated block) is as follows:
 public class HalfSquare extends Patch {
 
     // REQUIRES: rotation is 0, 90, 180, or 270 degrees
-    //           finishedSideLength is pre-determined by the block size and number of patches (passed in from block)
-    // EFFECTS: creates a half-square patch of given size (inches) & rotation (deg), with two fabrics
-    public HalfSquare(double finishedSideLength, int rotation) {
-        super(finishedSideLength, rotation);
+    // EFFECTS: creates a half-square patch of given rotation (deg), with two fabrics
+    public HalfSquare(int rotation) {
+        super(rotation);
     }
 
     // EFFECTS: Creates a half-square patch; used only when deserializing patch data from JSON using GSON
     private HalfSquare() { }
 
-    // EFFECTS: calculates the total fabric (in square i
-    // nches) needed to make one rectangle of the patch
+    // REQUIRES: patchzSize >= 0
+    // EFFECTS: calculates the total fabric (in square inches) needed to make one rectangle of the patch of given size
     @Override
-    protected double calculateFabric() {
-        double unfinishedHeightPerRectangle = finishedSideLength + (Quilt.SEAM_ALLOWANCE * 2);
-        double unfinishedWidthPerRectangle = (finishedSideLength / 2) + (Quilt.SEAM_ALLOWANCE * 2);
+    protected double calculateFabric(double patchSize) {
+        double unfinishedHeightPerRectangle = patchSize + (Quilt.SEAM_ALLOWANCE * 2);
+        double unfinishedWidthPerRectangle = (patchSize / 2) + (Quilt.SEAM_ALLOWANCE * 2);
         return unfinishedHeightPerRectangle * unfinishedWidthPerRectangle;
     }
 

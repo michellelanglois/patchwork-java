@@ -99,7 +99,6 @@ class QuiltTest {
             testQuilt.addBlock("friendship star", 0);
             Block targetBlockSlot = testQuilt.getBlocks().get(0);
             assertEquals("friendship star", targetBlockSlot.getBlockType());
-            assertEquals(6.0, targetBlockSlot.getFinishedSize());
             assertEquals(4, targetBlockSlot.countPatches(Patch.HALF_TRIANGLE));
             for (int i = 1; i < testQuilt.getTotalBlocks(); i++) {
                 assertNull(testQuilt.getBlocks().get(i));
@@ -117,7 +116,6 @@ class QuiltTest {
             testQuilt.addBlock("checkerboard", 6);
             Block targetBlockSlot = testQuilt.getBlocks().get(6);
             assertEquals("checkerboard", targetBlockSlot.getBlockType());
-            assertEquals(6.0, targetBlockSlot.getFinishedSize());
             assertEquals(0, targetBlockSlot.countPatches(Patch.HALF_SQUARE));
             for (int i = 0; i < 6; i++) {
                 assertNull(testQuilt.getBlocks().get(i));
@@ -142,7 +140,6 @@ class QuiltTest {
 
             Block newTargetBlockSlot = testQuilt.getBlocks().get(6);
             assertEquals("greek square", newTargetBlockSlot.getBlockType());
-            assertEquals(6.0, newTargetBlockSlot.getFinishedSize());
             assertEquals(4, newTargetBlockSlot.countPatches(Patch.HALF_SQUARE));
             for (int i = 0; i < 6; i++) {
                 assertNull(testQuilt.getBlocks().get(i));

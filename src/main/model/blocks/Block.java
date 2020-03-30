@@ -1,6 +1,6 @@
 package model.blocks;
 
-import exceptions.IllegalQuiltSizeException;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import model.patches.Patch;
 import persistence.Reader;
 import exceptions.BlockUnavailableException;
@@ -20,57 +20,26 @@ public class Block {
     private static final int NUM_OF_PATCHES = 9;
 
     private String blockType;
-    private double finishedSize;
     private List<Patch> patches;
 
     // REQUIRES: finishedSize > 0
-    // EFFECTS: creates a block (list of patches) of the given type and of the given finished side length (in inches)
-    //          finishedSize is predetermined by block size set in Quilt
-    //          if blockType is not a known type, constructor will throw an exception
-    public Block(String blockType, double finishedSize) throws BlockUnavailableException {
-        if (!BlockType.isAvailableBlock(blockType)) {
-            throw new BlockUnavailableException();
-        } else {
-            this.blockType = blockType;
-            this.finishedSize = finishedSize;
-            this.patches = getPatchesFromPattern(BlockType.getBlockFileName(blockType));
-        }
+    // EFFECTS: creates a block (list of patches) of the given type
+    //          if blockType is not a known type, constructor will throw a BlockUnavailableException
+    public Block(String blockType) throws BlockUnavailableException {
+        this.blockType = blockType;
+        this.patches = BlockMap.getBlockPatchPattern(blockType);
     }
 
     // EFFECTS: Creates a block; used only when deserializing saved block data from JSON using GSON
     private Block() { }
 
     // getters
-    public double getFinishedSize() {
-        return finishedSize;
-    }
-
     public List<Patch> getPatches() {
         return patches;
     }
 
     public String getBlockType() {
         return blockType;
-    }
-
-    // EFFECTS: calculates the finished side length (in inches) of each patch that comprises the block
-    public double getFinishedPatchSize() {
-        return finishedSize / Math.sqrt(NUM_OF_PATCHES);
-    }
-
-    // EFFECTS: returns a list of patches of the correct size for given block type and block size
-    public ArrayList<Patch> getPatchesFromPattern(String fileWithPattern) throws BlockUnavailableException {
-        try {
-            // reads pattern of patches from file
-            ArrayList<Patch> patches = Reader.readPatchPattern(new File(fileWithPattern));
-            // sets correct patch size
-            for (Patch p : patches) {
-                p.setFinishedSideLength(getFinishedPatchSize());
-            }
-            return patches;
-        } catch (IOException e) {
-            throw new BlockUnavailableException();
-        }
     }
 
     // EFFECTS: counts the number of patches of the given type needed to make the block
@@ -84,12 +53,14 @@ public class Block {
         return count;
     }
 
-    // EFFECTS: calculates the amount of fabric (in square inches) needed of the given type to create the block
-    public double calculateFabric(String fabric) {
+    // REQUIRES: blockSize >= 0
+    // EFFECTS: calculates amount of fabric (in square inches) needed of the given type to create block of given size
+    public double calculateFabric(String fabric, double blockSize) {
         double total = 0;
+        double patchSize = blockSize / Math.sqrt(NUM_OF_PATCHES);
         for (Patch p : patches) {
             if (p.containsFabric(fabric)) {
-                total += p.calculateFabric(fabric);
+                total += p.calculateFabric(fabric, patchSize);
             }
         }
         return total;

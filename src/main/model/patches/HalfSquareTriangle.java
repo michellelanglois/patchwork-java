@@ -16,19 +16,19 @@ Half-square triangle block fabric assignment (unrotated block) is as follows:
 public class HalfSquareTriangle extends Patch {
 
     // REQUIRES: rotation is 0, 90, 180, or 270 degrees
-    //           finishedSideLength is pre-determined by the block size and number of patches (passed in from block)
-    // EFFECTS: creates a half-square triangle patch of given side length (inches) & rotation (deg), with two fabrics
-    public HalfSquareTriangle(double finishedSideLength, int rotation) {
-        super(finishedSideLength, rotation);
+    // EFFECTS: creates a half-square triangle patch of given rotation (deg), with two fabrics
+    public HalfSquareTriangle(int rotation) {
+        super(rotation);
     }
 
     // EFFECTS: Creates a half-square triangle patch; used only when deserializing patch data from JSON using GSON
     private HalfSquareTriangle() { }
 
     @Override
+    // REQUIRES: patchSize >= 0
     // EFFECTS: calculates the total fabric (in square inches) needed to make one triangle of the patch
-    protected double calculateFabric() {
-        double unfinishedSideLength = finishedSideLength + (Quilt.SEAM_ALLOWANCE * 2);
+    protected double calculateFabric(double patchSize) {
+        double unfinishedSideLength = patchSize + (Quilt.SEAM_ALLOWANCE * 2);
         double startingSquareSideLength = unfinishedSideLength + 1;
         return startingSquareSideLength * startingSquareSideLength / 2;
     }

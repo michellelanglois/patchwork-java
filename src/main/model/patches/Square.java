@@ -15,11 +15,10 @@ Square blocks always start off not rotated, unlike half-squares and half-square 
 
 public class Square extends Patch {
 
-    // REQUIRES: style must be "A" or "B"
-    //           finishedSideLength is pre-determined by the block size and number of patches (passed in from block)
-    // EFFECTS: creates a square patch of given size (in inches) and style ("A" or "B")
-    public Square(double finishedSideLength, String fabric) {
-        super(finishedSideLength, 0);
+    // REQUIRES: fabric must be "A" or "B"
+    // EFFECTS: creates a square patch of given fabric ("A" or "B")
+    public Square(String fabric) {
+        super(0);
 
         if (fabric.equals("A")) {
             fabrics.set(1, null);
@@ -32,9 +31,10 @@ public class Square extends Patch {
     private Square() { }
 
     @Override
-    // EFFECTS: calculates the total fabric (in square inches) needed to make the patch
-    protected double calculateFabric() {
-        double unfinishedSideLength = finishedSideLength + (Quilt.SEAM_ALLOWANCE * 2);
+    // REQUIRES: patchzSize >= 0
+    // EFFECTS: calculates the total fabric (in square inches) needed to make the patch of given size
+    protected double calculateFabric(double patchSize) {
+        double unfinishedSideLength = patchSize + (Quilt.SEAM_ALLOWANCE * 2);
         return unfinishedSideLength * unfinishedSideLength;
     }
 

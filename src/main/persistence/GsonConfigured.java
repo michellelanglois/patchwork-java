@@ -44,9 +44,9 @@ public class GsonConfigured {
     // https://futurestud.io/tutorials/how-to-deserialize-a-list-of-polymorphic-objects-with-gson
     private RuntimeTypeAdapterFactory<Patch> makePatchRuntimeTypeAdapterFactory() {
         RuntimeTypeAdapterFactory<Patch> patchAdapter = RuntimeTypeAdapterFactory.of(Patch.class, "gsonType");
-        patchAdapter.registerSubtype(Square.class, "a");
-        patchAdapter.registerSubtype(HalfSquare.class, "b");
-        patchAdapter.registerSubtype(HalfSquareTriangle.class, "c");
+        patchAdapter.registerSubtype(Square.class, "SQ");
+        patchAdapter.registerSubtype(HalfSquare.class, "HS");
+        patchAdapter.registerSubtype(HalfSquareTriangle.class, "HT");
         return patchAdapter;
     }
 

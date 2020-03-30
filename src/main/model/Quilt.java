@@ -94,7 +94,7 @@ public class Quilt implements Saveable {
         if (slot < 0 || slot >= getTotalBlocks()) {
             throw new SlotOutOfBoundsException();
         } else {
-            Block blockToAdd = new Block(blockType, blockSize);
+            Block blockToAdd = new Block(blockType);
             blocks.set(slot, blockToAdd);
         }
     }
@@ -125,7 +125,7 @@ public class Quilt implements Saveable {
         double total = 0;
         for (Block b : blocks) {
             if (b != null) {
-                total += b.calculateFabric(fabric);
+                total += b.calculateFabric(fabric, blockSize);
             }
         }
         return Math.ceil(total);
