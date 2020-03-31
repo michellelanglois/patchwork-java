@@ -4,7 +4,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import model.blocks.Block;
 import ui.QuiltApp;
-import ui.visualization.BlockSpacePane;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,9 @@
 package model.blocks;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import model.patches.Patch;
-import persistence.Reader;
 import exceptions.BlockUnavailableException;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /*
