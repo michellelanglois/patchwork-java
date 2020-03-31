@@ -1,31 +1,34 @@
-package ui;
+package ui.visualization;
 
 import exceptions.BlockUnavailableException;
 import exceptions.SlotOutOfBoundsException;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.StackPane;
 import model.blocks.Block;
+import ui.QuiltApp;
 
 /*
 Represents a single block space in the quilt grid, capable of having blocks added and removed from it
  */
 
-public class BlockSpace extends StackPane {
+public class BlockSpacePane extends StackPane {
 
-    QuiltGridUI quiltGridUI;
-    Button deleteButton;
-    double blockSpaceSize;
-    int blockIndex;
+    private static final Image DELETE_ICON = new Image("file:./data/icons/delete.png");
+
+    private QuiltApp quiltApp;
+    private Button deleteButton;
+    private double blockSpaceSize;
+    private int blockIndex;
 
     // MODIFIES: this
     // EFFECTS: creates a block space with specific index link to quilt blocks list and methods to add and remove blocks
-    public BlockSpace(QuiltGridUI quiltGridUI, double blockSpaceSize, int blockIndex) {
-        this.quiltGridUI = quiltGridUI;
+    public BlockSpacePane(QuiltApp quiltApp, double blockSpaceSize, int blockIndex) {
+        this.quiltApp = quiltApp;
         this.blockSpaceSize = blockSpaceSize;
         this.blockIndex = blockIndex;
         this.deleteButton = initializeDeleteButton();
@@ -54,42 +57,6 @@ public class BlockSpace extends StackPane {
         Label blockSpaceLabel = new Label(Integer.toString(blockIndex + 1));
 
         this.getChildren().addAll(deleteButton, blockSpaceLabel);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: creates a delete button visible only on hover, button invisible & disabled when initialized
-    private Button initializeDeleteButton() {
-        deleteButton = new Button();
-        deleteButton.setGraphic(new ImageView(QuiltAppGUI.DELETE_ICON));
-        deleteButton.setStyle("-fx-background-color: transparent;");
-        disableDeleteButton();
-
-        this.setOnMouseEntered(event -> deleteButton.toFront());
-        this.setOnMouseExited(event -> deleteButton.toBack());
-
-        deleteButton.setOnAction(event -> {
-            try {
-                quiltGridUI.removeBlockFromQuilt(blockIndex);
-            } catch (SlotOutOfBoundsException e) {
-                event.consume();
-            }
-        });
-
-        return deleteButton;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: disables delete button (so it cannot be used when a quilt block is not present in block space)
-    private void disableDeleteButton() {
-        deleteButton.setVisible(false);
-        deleteButton.setDisable(true);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: enables the delete button so it can be used when a quilt block is present in the block space
-    private void enableDeleteButton() {
-        deleteButton.setVisible(true);
-        deleteButton.setDisable(false);
     }
 
     // MODIFIES: this
@@ -127,7 +94,7 @@ public class BlockSpace extends StackPane {
             boolean success = false;
             if (db.hasString()) {
                 try {
-                    quiltGridUI.addBlockToQuilt(db.getString(), blockIndex);
+                    quiltApp.handleAddBlockToQuilt(db.getString(), blockIndex);
                 } catch (BlockUnavailableException | SlotOutOfBoundsException e) {
                     event.consume();
                 }
@@ -138,10 +105,46 @@ public class BlockSpace extends StackPane {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a delete button visible only on hover, button invisible & disabled when initialized
+    private Button initializeDeleteButton() {
+        deleteButton = new Button();
+        deleteButton.setGraphic(new ImageView(DELETE_ICON));
+        deleteButton.setStyle("-fx-background-color: transparent;");
+        disableDeleteButton();
+
+        deleteButton.setOnAction(event -> {
+            try {
+                quiltApp.handleRemoveBlockFromQuilt(blockIndex);
+            } catch (SlotOutOfBoundsException e) {
+                event.consume();
+            }
+        });
+
+        this.setOnMouseEntered(event -> deleteButton.toFront());
+        this.setOnMouseExited(event -> deleteButton.toBack());
+
+        return deleteButton;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: disables delete button (so it cannot be used when a quilt block is not present in block space)
+    private void disableDeleteButton() {
+        deleteButton.setVisible(false);
+        deleteButton.setDisable(true);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: enables the delete button so it can be used when a quilt block is present in the block space
+    private void enableDeleteButton() {
+        deleteButton.setVisible(true);
+        deleteButton.setDisable(false);
+    }
+
     // EFFECTS: resets block space to initial state, without any quilt block images
     public void resetBlockSpace() {
         this.getChildren().clear();
-        this.makeBlockSpace();
+        this.setBlockSpaceLayout();
         disableDeleteButton();
     }
 
@@ -158,4 +161,5 @@ public class BlockSpace extends StackPane {
             enableDeleteButton();
         }
     }
+
 }

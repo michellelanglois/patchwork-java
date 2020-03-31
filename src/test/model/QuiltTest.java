@@ -31,6 +31,8 @@ class QuiltTest {
         for (Block b: testQuilt.getBlocks()) {
             assertNull(b);
         }
+        assertNull(testQuilt.getFabricColours()[0]);
+        assertNull(testQuilt.getFabricColours()[1]);
     }
 
     @Test
@@ -91,6 +93,13 @@ class QuiltTest {
         } catch (IllegalQuiltSizeException e) {
             // all good
         }
+    }
+
+    @Test
+    public void testSetFabricColours() {
+        testQuilt.setFabricColours("blue", "green");
+        assertEquals(testQuilt.getFabricColours()[0], "blue");
+        assertEquals(testQuilt.getFabricColours()[1], "green");
     }
 
     @Test

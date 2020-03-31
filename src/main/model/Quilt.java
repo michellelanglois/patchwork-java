@@ -36,6 +36,7 @@ public class Quilt implements Saveable {
     private int numBlocksDown;
     private double blockSize;
     private List<Block> blocks;
+    private String[] fabricColours;
 
     // EFFECTS: Creates a quilt grid with space for given number of blocks across/down of given side length (in inches)
     public Quilt(int numBlocksAcross, int numBlocksDown, double blockSize) throws IllegalQuiltSizeException {
@@ -53,6 +54,8 @@ public class Quilt implements Saveable {
             for (int i = 0; i < totalBlocks; i++) {
                 blocks.add(i, null);
             }
+
+            fabricColours = new String[]{null, null};
         }
     }
 
@@ -86,6 +89,15 @@ public class Quilt implements Saveable {
 
     public List<Block> getBlocks() {
         return blocks;
+    }
+
+    public String[] getFabricColours() {
+        return fabricColours;
+    }
+
+    // setters
+    public void setFabricColours(String colour1, String colour2) {
+        fabricColours = new String[]{colour1, colour2};
     }
 
     // MODIFIES: this

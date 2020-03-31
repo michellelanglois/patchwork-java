@@ -1,4 +1,4 @@
-package ui;
+package ui.design;
 
 import exceptions.IllegalQuiltSizeException;
 import javafx.geometry.HPos;
@@ -9,45 +9,63 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import model.Quilt;
+import ui.QuiltApp;
+
 
 /*
 Represents the control panel to create a new quilt
  */
 
-public class NewQuiltControlsUI extends GridPane {
+public class ControlsPane extends VBox {
 
-    QuiltAppGUI quiltAppGUI;
-    Spinner<Integer> blocksAcross;
-    Spinner<Integer> blocksDown;
-    Spinner<Double> blockSize;
-    Button startNewButton;
-    Button resetButton;
-    Label quiltSizeLabel;
-    Label blocksAcrossLabel;
-    Label blocksDownLabel;
-    Label blocksSizeLabel;
+    private QuiltApp quiltApp;
+    private Spinner<Integer> blocksAcross;
+    private Spinner<Integer> blocksDown;
+    private Spinner<Double> blockSize;
+    private Button startNewButton;
+    private Button resetButton;
+    private Label quiltSizeLabel;
+    private Label blocksAcrossLabel;
+    private Label blocksDownLabel;
+    private Label blocksSizeLabel;
 
     // EFFECTS: creates a new quilt control pane with component parts and associated event listeners
-    public NewQuiltControlsUI(QuiltAppGUI quiltAppGUI) {
-        this.quiltAppGUI = quiltAppGUI;
+    public ControlsPane(QuiltApp quiltApp) {
+        this.quiltApp = quiltApp;
         this.blocksAcross = initializeIntSpinner();
         this.blocksDown = initializeIntSpinner();
         this.blockSize = initializeDoubleSpinner();
         this.startNewButton = initializeStartButton();
         this.resetButton = initializeResetButton();
         this.quiltSizeLabel = new Label();
-        quiltSizeLabel.getStyleClass().add("quilt-size-label");
+        this.quiltSizeLabel.getStyleClass().add("quilt-size-label");
         this.blocksAcrossLabel = new Label("Blocks across:");
         this.blocksDownLabel = new Label("Blocks down:");
         this.blocksSizeLabel = new Label("Block size (inches): ");
 
-        initializeQuiltControlsLayout();
+        initializeLayout();
+    }
+
+    // EFFECTS: creates and returns the control pane for starting a new quilt
+    private void initializeLayout() {
+        this.getStyleClass().add("vbox");
+
+        Label quiltControlLabel = new Label("Let's get creative! What size quilt do you want to make?");
+        quiltControlLabel.getStyleClass().add("design-label");
+
+        GridPane quiltControls = new GridPane();
+        initializeQuiltControlsLayout(quiltControls);
+        quiltControls.getStyleClass().add("new-quilt-controls");
+
+        this.getChildren().addAll(quiltControlLabel, quiltControls);
+
     }
 
     // MODIFIES: this
     // EFFECTS: creates the layout for the new quilt control pane
-    private void initializeQuiltControlsLayout() {
+    private GridPane initializeQuiltControlsLayout(GridPane quiltControls) {
         GridPane.setConstraints(blocksAcrossLabel, 0, 0);
         GridPane.setConstraints(blocksDownLabel, 0, 1);
         GridPane.setConstraints(blocksSizeLabel, 0, 2);
@@ -69,9 +87,10 @@ public class NewQuiltControlsUI extends GridPane {
         ColumnConstraints column4 = new ColumnConstraints();
         column4.setPercentWidth(15);
 
-        this.getColumnConstraints().addAll(column0, column1, column2, column3, column4);
-        this.getChildren().addAll(blocksAcross, blocksDown, blockSize, startNewButton, resetButton, blocksAcrossLabel,
-                blocksDownLabel, blocksSizeLabel, quiltSizeLabel);
+        quiltControls.getColumnConstraints().addAll(column0, column1, column2, column3, column4);
+        quiltControls.getChildren().addAll(blocksAcross, blocksDown, blockSize, startNewButton, resetButton,
+                blocksAcrossLabel, blocksDownLabel, blocksSizeLabel, quiltSizeLabel);
+        return quiltControls;
     }
 
     // MODIFIES: this
@@ -81,17 +100,16 @@ public class NewQuiltControlsUI extends GridPane {
         startNewButton.setTooltip(new Tooltip("Create a new quilt of chosen size"));
 
         startNewButton.setOnAction(event -> {
+            int blocksAcross = this.blocksAcross.getValue();
+            int blocksDown = this.blocksDown.getValue();
+            double blockSize = this.blockSize.getValue();
             try {
-                Quilt quilt = new Quilt(blocksAcross.getValue(), blocksDown.getValue(), blockSize.getValue());
-                quiltAppGUI.setQuilt(quilt);
-                quiltAppGUI.getQuiltGrid().initializeQuiltGrid();
-                quiltAppGUI.getQuiltGrid().renderQuilt();
-                disableControls();
+                quiltApp.handleStartNewQuiltButtonPressed(blocksAcross, blocksDown, blockSize);
             } catch (IllegalQuiltSizeException e) {
                 event.consume();
             }
+            disableControls();
         });
-
         return startNewButton;
     }
 
@@ -101,12 +119,11 @@ public class NewQuiltControlsUI extends GridPane {
         Button resetButton = new Button("Restart");
         resetButton.setTooltip(new Tooltip("Allows you to create a different quilt"));
         resetButton.setDisable(true);
+
         resetButton.setOnAction(event -> {
-            quiltAppGUI.setQuilt(null);
-            quiltAppGUI.getQuiltGrid().clearQuiltGrid();
+            quiltApp.handleResetQuiltButtonPressed();
             enableControls();
         });
-
         return resetButton;
     }
 
@@ -136,7 +153,7 @@ public class NewQuiltControlsUI extends GridPane {
         Spinner<Integer> spinner = new Spinner<>(1, 25, 1);
         spinner.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (!oldValue.equals(newValue)) {
-                calculateSize();
+                calculateExpectedSize();
             }
         });
 
@@ -149,7 +166,7 @@ public class NewQuiltControlsUI extends GridPane {
         Spinner<Double> spinner = new Spinner<>(3.0, 18.0, 3.0, 1.5);
         spinner.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (!oldValue.equals(newValue)) {
-                calculateSize();
+                calculateExpectedSize();
             }
         });
 
@@ -158,7 +175,7 @@ public class NewQuiltControlsUI extends GridPane {
 
     // MODIFIES: this
     // EFFECTS: calculates total size of quilt so this can be displayed by GUI
-    private void calculateSize() {
+    private void calculateExpectedSize() {
         double width = blocksAcross.getValue() * blockSize.getValue() + (Quilt.BINDING_WIDTH - 0.5) * 2;
         double height = blocksDown.getValue() * blockSize.getValue() + (Quilt.BINDING_WIDTH - 0.5) * 2;
         this.quiltSizeLabel.setText("Total size: \n" + width + "\" x " + height + "\"");
@@ -166,12 +183,12 @@ public class NewQuiltControlsUI extends GridPane {
 
     // MODIFIES: this
     // EFFECTS: updates information displayed in controls based on loaded quilt
-    public void updateQuiltInfoOnLoad() {
-        Quilt quilt = quiltAppGUI.getQuilt();
-        this.blocksAcross.getValueFactory().setValue(quilt.getNumBlocksAcross());
-        this.blocksDown.getValueFactory().setValue(quilt.getNumBlocksDown());
-        this.blockSize.getValueFactory().setValue(quilt.getBlockSize());
-        calculateSize();
+    public void updateQuiltInfoOnLoad(int blocksAcross, int blocksDown, double blockSize) {
+        this.blocksAcross.getValueFactory().setValue(blocksAcross);
+        this.blocksDown.getValueFactory().setValue(blocksDown);
+        this.blockSize.getValueFactory().setValue(blockSize);
+        calculateExpectedSize();
         disableControls();
     }
+
 }

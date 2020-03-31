@@ -52,8 +52,34 @@ Additionally, you can interact with the program in the following ways:
 ## Phase 4: Task 3
 ### Minor problems
 - I identified some methods that were no longer needed (e.g. toString()-type methods used for the console version of the app) and removed these.
-- I removed a field in Patch -- type -- that was not necessary.
+- I removed a field in Patch -- type -- that was not necessary and changed the automatically generated Gson type field to be more descriptive in my GsonConfigured class.
 
 ### Bigger problems
-- There was code redundancy and coupling between Quilt, Block, and Patch in that I was maintaining a finished side length field in Block and Patch that was entirely dependent on the Quilt's block size, and was only using this field in the calculateFabric() method (which was only ever called from Quilt). I realized I could pass in the finished block size from Quilt as a parameter to the calculateFabric() methods in Block and Patch instead. That way, if I want to change the quilt size after creating a quilt, I only need to change the size in one place -- Quilt -- instead of propagating that change through the Quilt's blocks and patches, too.
-- There was lack of cohesion in Block in that Block contained a helper method to get the pattern of patches for the block type being instantiated. This also introduced some coupling between Block, BlockMap, and Reader in that Block needed to know what kind of information BlockMap stored to access the file name where Block's pattern was stored, and then get Reader to read the pattern. If I wanted, for example, to have BlockMap store the actual File as a value instead of the file name, I would have to make changes in Block also. Since the purpose of the BlockMap class was to maintain all information about available blocks and their patterns, I decided to move the patch pattern reading logic into a method in BlockMap so that Block can just ask the BlockMap for its appropriate patches in the Block constructor. This improved cohesion in Block and reduced coupling. (I also added a listAvailableBlocks() method to BlockMap for use in the QuiltAppGUI to reduce some minor coupling that existed there where QuiltAppGUI was directly accessing the block map's keys.)
+#### Coupling and code redundancy between Quilt, Block, and Patch
+#####Problem:
+There was code redundancy and coupling between Quilt, Block, and Patch in that I was maintaining a finishedSize field in Block and Patch that was entirely dependent on the Quilt's blockSize, and was only using this field in the calculateFabric() method (which was only ever called from Quilt). 
+
+#####Solution: 
+I removed this field. I realized I could pass in the finished block size from Quilt as a parameter to the calculateFabric() methods in Block and Patch instead. That way, if I want to change the quilt size after creating a quilt, I only need to change the size in one place -- Quilt -- instead of propagating that change through the Quilt's blocks and patches, too.
+
+#### Lack of cohesion in Block
+#####Problem:
+There was lack of cohesion in Block in that Block contained a helper method (getPatchesFromPattern()) to get the pattern of patches for the block type being instantiated. This also introduced some coupling between Block, BlockMap, and Reader in that Block needed to know what kind of information BlockMap stored to access the file name where Block's pattern was stored, and then call on Reader to read the pattern. If I wanted, for example, to have BlockMap store the actual File as a value instead of the file name, I would have to make changes in Block also. 
+
+#####Solution: 
+Since the purpose of the BlockMap class was to maintain all information about available blocks and their patterns, I decided to move the patch pattern reading logic into a method in BlockMap so that Block can just directly ask the BlockMap for its appropriate patches in its constructor. This improved cohesion in Block and reduced coupling. (I also added a listAvailableBlocks() method to BlockMap for use in the QuiltApp to reduce some minor coupling that existed there where QuiltApp was directly accessing the block map's keys.)
+
+#### Cohesion and coupling issues in ui package
+#####Problem: 
+There were significant coupling and cohesion issues in my ui package. For example:
+- QuiltApp (my main GUI class) was not very cohesive: it initialized the layout, set up basic procedures to close the app, directly initialized and populated some panels (but not others that were separate classes), contained logic to render blocks, and more.
+- Some panels that I designed as classes had other panels as fields, introducing strong coupling. For example, the BlockSpace class had a QuiltGrid field so that it could access the current Quilt that was a field in the QuiltGrid class, which QuiltGrid was getting from QuiltApp. Messy!
+
+#####Solution:
+I refactored my GUI as follows:
+- All subpanels for the main layout are now classes and the main QuiltApp just composes them into the overall layout(each subpanel class is a field in QuiltApp). 
+- QuiltApp handles events that affect the Quilt (e.g. loading, saving, adding/removing blocks), more than one subpanel, or the overall app (e.g. closing).
+- If an event in a subpanel needs to change the Quilt or affects another subpanel, the event handler calls a method in QuiltApp, which then calls methods on Quilt or informs other subpanels that they need to make changes. This means that the only other panel my subpanels can access is the QuiltApp, which now also has the only Quilt field.
+
+There are no doubt still things I could do better. Implementing the Observer pattern might simplify some code in the GUI, for example. However, even this initial refactoring made it easier to see how the pieces of the GUI fit together. Plus, the refactoring made it simpler to add the functionality of saving and reloading the quilt colors chosen by the user.
+
